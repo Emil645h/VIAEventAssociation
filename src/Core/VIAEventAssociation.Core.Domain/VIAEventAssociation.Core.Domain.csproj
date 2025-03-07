@@ -15,4 +15,8 @@
             <_Parameter1>UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Values\" />
+    </ItemGroup>
 </Project>

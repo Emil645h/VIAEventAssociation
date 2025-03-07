@@ -1,9 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
-using VIAEventAssociation.Core.Tools.OperationResult.OperationResult.Errors;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Guests.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 
 public record ViaEmail
 {

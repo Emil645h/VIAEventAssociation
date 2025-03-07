@@ -1,6 +1,6 @@
-using VIAEventAssociation.Core.Domain.Aggregates.Guests.ValueObjects;
+using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
+using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
-using VIAEventAssociation.Core.Tools.OperationResult.OperationResult.Errors;
 
 namespace UnitTests.Common.Values.GuestTests;
 
