@@ -9,8 +9,10 @@ public static class InviteErrors
         private const string InviteIdCode = "Event.Invite.Id";
 
         public static ResultError IsEmpty = new(InviteIdCode, "Invite Id cannot be empty.");
-        public static ResultError AlreadyAccepted = new(InviteIdCode, "Cannot reject invite when invite is accepted.");
-        public static ResultError AlreadyRejected = new(InviteIdCode, "Cannot accept invite when invite is rejected.");
+        public static ResultError CannotAccept = new(InviteIdCode, "Cannot accept invite in its current state.");
+        public static ResultError CannotReject = new(InviteIdCode, "Cannot reject invite in its current state.");
+        public static ResultError Mismatch = new(InviteIdCode, "Mismatch invite ID.");
+        
     }
 
     public static class AssignToGuestId
