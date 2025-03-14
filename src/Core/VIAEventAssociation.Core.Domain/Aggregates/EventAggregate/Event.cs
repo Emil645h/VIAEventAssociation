@@ -39,6 +39,15 @@ public class Event : AggregateRoot<EventId>
         return new Event(id, title, description, default, default, visibility, status, maxGuests, guestList, null);
     }
     
+    public Result<None> UpdateTitle(EventTitle title)
+    {
+        if (status.Equals(EventStatus.Active) || status.Equals(EventStatus.Cancelled))
+            return EventErrors.EventTitle.InvalidEventStatus;
+        
+        this.title = title;
+        status = EventStatus.Draft;
+        return new None();
+    }
     
 
     public Result<None> MakePublic()
@@ -56,6 +65,18 @@ public class Event : AggregateRoot<EventId>
     public Result<None> SetReadyStatus()
     {
         status = EventStatus.Ready;
+        return new None();
+    }
+    
+    public Result<None> SetActiveStatus()
+    {
+        status = EventStatus.Active;
+        return new None();
+    }
+    
+    public Result<None> SetCancelledStatus()
+    {
+        status = EventStatus.Cancelled;
         return new None();
     }
 }
