@@ -5,7 +5,7 @@ using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.EventTests.InviteTests;
 
-public class InviteAssignmentTests
+public class AssignInviteTests
 {
     [Fact]
     public void AssignInviteTo_WithValidGuestId_ReturnsSuccess()
@@ -83,7 +83,7 @@ public class InviteAssignmentTests
         var result = invite.AssignToInvite(guestId2);
         var resultFailure = Assert.IsType<Failure<None>>(result);
         
-        // Arrange
+        // Assert
         Assert.True(result.IsFailure);
         Assert.Contains(resultFailure.Errors, e => e == InviteErrors.AssignToGuestId.AlreadyAssigned);
     }

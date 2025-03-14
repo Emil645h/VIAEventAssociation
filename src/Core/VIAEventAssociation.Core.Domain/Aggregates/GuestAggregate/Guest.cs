@@ -15,5 +15,31 @@ public class Guest : AggregateRoot<GuestId>
     
     public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email) 
         => new Guest(id, firstName, lastName, email);
-    
+
+    public Result<None> UpdateViaEmail(ViaEmail viaEmail)
+    {
+        if (viaEmail == null)
+            return GuestErrors.ViaEmail.EmailIsEmpty;
+        
+        email = viaEmail;
+        return new None();
+    }
+
+    public Result<None> UpdateFirstName(FirstName newName)
+    {
+        if (newName == null)
+            return GuestErrors.FirstName.FirstNameIsEmpty;
+        
+        firstName = newName;
+        return new None();
+    }
+
+    public Result<None> UpdateLastName(LastName newName)
+    {
+        if (newName == null)
+            return GuestErrors.LastName.LastNameIsEmpty;
+        
+        lastName = newName;
+        return new None();
+    }
 }
