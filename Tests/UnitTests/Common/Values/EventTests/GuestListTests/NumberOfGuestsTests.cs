@@ -1,5 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.GuestList;
-using VIAEventAssociation.Core.Domain.Aggregates.Events.GuestList.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.EventTests.GuestListTests;

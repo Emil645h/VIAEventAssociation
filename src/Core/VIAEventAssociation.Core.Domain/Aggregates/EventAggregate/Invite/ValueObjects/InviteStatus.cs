@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Common.Bases;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Invite.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 
 public class InviteStatus : Enumeration
 {

@@ -1,9 +1,10 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
-using VIAEventAssociation.Core.Domain.Aggregates.Locations.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
+using VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 
 public class Event : AggregateRoot<EventId>
 {
@@ -14,10 +15,10 @@ public class Event : AggregateRoot<EventId>
     internal EventVisibility visibility;
     internal EventStatus status;
     internal EventMaxGuests maxGuests;
-    internal IList<GuestList.GuestList> guestList;
+    internal GuestList.GuestList guestList;
     internal LocationId? locationId;
     
-    private Event(EventId id, EventTitle title, EventDescription description, DateTime startDate, DateTime endDate, EventVisibility visibility, EventStatus status, EventMaxGuests maxGuests, IList<GuestList.GuestList> guestList, LocationId locationId)
+    private Event(EventId id, EventTitle title, EventDescription description, DateTime startDate, DateTime endDate, EventVisibility visibility, EventStatus status, EventMaxGuests maxGuests, GuestList.GuestList guestList, LocationId locationId)
         : base(id)
     {
         (this.title, this.description, this.startDate, this.endDate, this.visibility, this.status, this.maxGuests, this.guestList, this.locationId)
@@ -32,8 +33,10 @@ public class Event : AggregateRoot<EventId>
         var status = EventStatus.Draft;
         var maxGuests = EventMaxGuests.Create(5).Value;
         var visibility = EventVisibility.Private;
+        var guestListId = GuestListId.Create(Guid.NewGuid()).Value;
+        var guestList = GuestList.GuestList.Create(guestListId).Value;
         
-        return new Event(id, title, description, default, default, visibility, status, maxGuests, new List<GuestList.GuestList>(), null);
+        return new Event(id, title, description, default, default, visibility, status, maxGuests, guestList, null);
     }
     
     

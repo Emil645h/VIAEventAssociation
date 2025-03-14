@@ -1,14 +1,15 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Locations.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
 
-public record LocationId
+public sealed record LocationId
 {
     
     public Guid Value { get; }
     
     private LocationId(Guid input) => Value = input;
 
-    public static Result<LocationId> Create(Guid locationId) => locationId == Guid.Empty ? LocationErrors.LocationId.IsEmpty : new LocationId(locationId);
+    public static Result<LocationId> Create(Guid value) =>
+    value == Guid.Empty ? LocationsErrors.LocationID.IsEmpty : new LocationId(value);
     
 }

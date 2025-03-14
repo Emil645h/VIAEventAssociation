@@ -1,7 +1,6 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.GuestList;
-using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
+﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Invite.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 
 public class InviteId
 {

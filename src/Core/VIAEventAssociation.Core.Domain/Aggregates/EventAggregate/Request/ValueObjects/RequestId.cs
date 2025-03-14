@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 
 public sealed record RequestId
 {

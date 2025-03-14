@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.GuestList.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
 
 public record NumberOfGuests
 {
@@ -17,7 +17,7 @@ public record NumberOfGuests
 
     private static Result<None> MustBeInRange(int numberOfGuests)
     {
-        if (numberOfGuests <= 0 || numberOfGuests > 100)
+        if (numberOfGuests is < 0 or > 100)
             return GuestListErrors.NumberOfGuests.IsInvalidRange;
         return new Success<None>(new None());
     }

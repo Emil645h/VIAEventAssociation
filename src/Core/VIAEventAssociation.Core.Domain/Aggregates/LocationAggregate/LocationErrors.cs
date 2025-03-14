@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Locations;
+namespace VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate;
 
 public static class LocationErrors
 {

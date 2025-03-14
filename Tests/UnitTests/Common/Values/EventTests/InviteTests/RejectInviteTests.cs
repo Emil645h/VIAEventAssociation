@@ -1,5 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Invite;
-using VIAEventAssociation.Core.Domain.Aggregates.Events.Invite.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.EventTests.InviteTests;
@@ -10,17 +10,8 @@ public class RejectInviteTests
     public void RejectInvite_WhenValidIdAndExtended_ReturnsSuccess()
     {
         // Arrange
-        var inviteIdResult = InviteId.Create(Guid.NewGuid());
-        var inviteId = inviteIdResult is Success<InviteId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(inviteId);
-        
-        var inviteResult = Invite.Create(inviteId);
-        var invite = inviteResult is Success<Invite> inviteSuccess
-            ? inviteSuccess.Value
-            : null;
-        Assert.NotNull(invite);
+        var inviteId = InviteId.Create(Guid.NewGuid()).Value;
+        var invite = Invite.Create(inviteId).Value;
         
         // Act
         var result = invite.RejectInvite(inviteId);
@@ -33,23 +24,9 @@ public class RejectInviteTests
     public void RejectInvite_WhenInvalidId_ReturnsFailure()
     {
         // Arrange
-        var inviteIdResult = InviteId.Create(Guid.NewGuid());
-        var inviteId = inviteIdResult is Success<InviteId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(inviteId);
-        
-        var inviteResult = Invite.Create(inviteId);
-        var invite = inviteResult is Success<Invite> inviteSuccess
-            ? inviteSuccess.Value
-            : null;
-        Assert.NotNull(invite);
-        
-        var differentIdResult = InviteId.Create(Guid.NewGuid());
-        var differentId = differentIdResult is Success<InviteId> differentSuccess
-            ? differentSuccess.Value
-            : null;
-        Assert.NotNull(differentId);
+        var inviteId = InviteId.Create(Guid.NewGuid()).Value;
+        var invite = Invite.Create(inviteId).Value;
+        var differentId = InviteId.Create(Guid.NewGuid()).Value;
         
         // Act
         var result = invite.RejectInvite(differentId);
@@ -64,17 +41,9 @@ public class RejectInviteTests
     public void RejectInvite_WhenAlreadyRejected_ReturnsFailure()
     {
         // Arrange
-        var inviteIdResult = InviteId.Create(Guid.NewGuid());
-        var inviteId = inviteIdResult is Success<InviteId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(inviteId);
+        var inviteId = InviteId.Create(Guid.NewGuid()).Value;
         
-        var inviteResult = Invite.Create(inviteId);
-        var invite = inviteResult is Success<Invite> inviteSuccess
-            ? inviteSuccess.Value
-            : null;
-        Assert.NotNull(invite);
+        var invite = Invite.Create(inviteId).Value;
         invite.RejectInvite(inviteId);
         
         // Act
@@ -90,17 +59,8 @@ public class RejectInviteTests
     public void RejectInvite_WhenAlreadyAccepted_ReturnsFailure()
     {
         // Arrange
-        var inviteIdResult = InviteId.Create(Guid.NewGuid());
-        var inviteId = inviteIdResult is Success<InviteId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(inviteId);
-        
-        var inviteResult = Invite.Create(inviteId);
-        var invite = inviteResult is Success<Invite> inviteSuccess
-            ? inviteSuccess.Value
-            : null;
-        Assert.NotNull(invite);
+        var inviteId = InviteId.Create(Guid.NewGuid()).Value;
+        var invite = Invite.Create(inviteId).Value;
         invite.AcceptInvite(inviteId);
         
         // Act

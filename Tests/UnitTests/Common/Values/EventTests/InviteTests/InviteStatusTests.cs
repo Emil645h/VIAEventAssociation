@@ -1,4 +1,4 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Invite.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 
 namespace UnitTests.Common.Values.EventTests.InviteTests;
 

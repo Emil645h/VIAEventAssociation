@@ -1,5 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Request;
-using VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.EventTests.RequestTests;
@@ -10,10 +10,8 @@ public class RequestTests
     public void Create_WithAllValidData_ReturnsRequest()
     {
         // Arrange
-        var idResult = RequestId.Create(Guid.NewGuid());
+        var requestId = RequestId.Create(Guid.NewGuid()).Value;
         var reason = "I'm super passionate about VIA.";
-
-        var requestId = ((Success<RequestId>)idResult).Value;
         
         // Act
         var requestResult = Request.Create(requestId, reason);
@@ -33,8 +31,7 @@ public class RequestTests
     public void Create_WithInvalidReason_ReturnsError(string reason)
     {
         // Arrange
-        var idResult = RequestId.Create(Guid.NewGuid());
-        var requestId = ((Success<RequestId>)idResult).Value;
+        var requestId = RequestId.Create(Guid.NewGuid()).Value;
         
         // Act
         var requestResult = Request.Create(requestId, reason);

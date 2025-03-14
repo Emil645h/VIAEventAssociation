@@ -1,5 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Request;
-using VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
@@ -11,31 +11,10 @@ public class AssignRequestTests
     public void AssignRequest_WithValidGuestIdAndReason_ReturnsSuccess()
     {
         // Arrange
-        var requestIdResult = RequestId.Create(Guid.NewGuid());
-        Assert.True(requestIdResult.IsSuccess);
-
-        var requestId = requestIdResult is Success<RequestId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(requestId);
-
+        var requestId = RequestId.Create(Guid.NewGuid()).Value;
         string reason = "I'm super passionate about VIA.";
-        
-        var requestResult = Request.Create(requestId, reason);
-        Assert.True(requestResult.IsSuccess);
-        
-        var request = requestResult is Success<Request> requestSuccess
-            ? requestSuccess.Value
-            : null;
-        Assert.NotNull(request);
-        
-        var guestIdResult = GuestId.Create(Guid.NewGuid());
-        Assert.True(guestIdResult.IsSuccess);
-        
-        var guestId = guestIdResult is Success<GuestId> guestSuccess
-            ? guestSuccess.Value
-            : null;
-        Assert.NotNull(guestId);
+        var request = Request.Create(requestId, reason).Value;
+        var guestId = GuestId.Create(Guid.NewGuid()).Value;
 
         // Act
         var result = request.AssignToRequest(guestId);
@@ -48,39 +27,11 @@ public class AssignRequestTests
     public void AssignRequest_WhenAlreadyAssigned_ReturnsFailure()
     {
         // Arrange
-        var requestIdResult = RequestId.Create(Guid.NewGuid());
-        Assert.True(requestIdResult.IsSuccess);
-
-        var requestId = requestIdResult is Success<RequestId> success
-            ? success.Value
-            : null;
-        Assert.NotNull(requestId);
-
+        var requestId = RequestId.Create(Guid.NewGuid()).Value;
         string reason = "I'm super passionate about VIA.";
-        
-        var requestResult = Request.Create(requestId, reason);
-        Assert.True(requestResult.IsSuccess);
-        
-        var request = requestResult is Success<Request> requestSuccess
-            ? requestSuccess.Value
-            : null;
-        Assert.NotNull(request);
-        
-        var guestIdResult = GuestId.Create(Guid.NewGuid());
-        Assert.True(guestIdResult.IsSuccess);
-        
-        var guestId = guestIdResult is Success<GuestId> guestSuccess
-            ? guestSuccess.Value
-            : null;
-        Assert.NotNull(guestId);
-        
-        var guestIdResult2 = GuestId.Create(Guid.NewGuid());
-        Assert.True(guestIdResult2.IsSuccess);
-        
-        var guestId2 = guestIdResult2 is Success<GuestId> guestIdResult2Success
-            ? guestIdResult2Success.Value
-            : null;
-        Assert.NotNull(guestId2);
+        var request = Request.Create(requestId, reason).Value;
+        var guestId = GuestId.Create(Guid.NewGuid()).Value;
+        var guestId2 = GuestId.Create(Guid.NewGuid()).Value;
         
         // Act
         request.AssignToRequest(guestId);

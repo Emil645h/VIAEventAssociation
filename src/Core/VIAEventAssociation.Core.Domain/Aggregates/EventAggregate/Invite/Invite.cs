@@ -1,9 +1,9 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Invite.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Invite;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite;
 
 public class Invite : Entity<InviteId>
 {

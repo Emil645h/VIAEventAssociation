@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Invite;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite;
 
 public static class InviteErrors
 {

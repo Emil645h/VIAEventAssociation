@@ -1,9 +1,9 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Request;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request;
 
 public class Request : Entity<RequestId>
 {

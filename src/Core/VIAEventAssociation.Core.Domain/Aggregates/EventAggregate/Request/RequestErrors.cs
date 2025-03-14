@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Request;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request;
 
 public static class RequestErrors
 {

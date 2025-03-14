@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Common.Bases;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
 public class EventStatus : Enumeration
 {

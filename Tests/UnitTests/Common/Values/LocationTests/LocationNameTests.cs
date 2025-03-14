@@ -1,4 +1,4 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Locations.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.LocationTests;

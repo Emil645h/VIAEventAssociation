@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Common.Bases;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 
 public class RequestStatus : Enumeration
 {

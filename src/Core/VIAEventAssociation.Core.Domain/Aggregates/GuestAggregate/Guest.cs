@@ -33,7 +33,6 @@ public class Guest : AggregateRoot<GuestId>
         firstName = newName;
         return new None();
     }
-
     public Result<None> UpdateLastName(LastName newName)
     {
         if (newName == null)

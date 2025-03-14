@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.GuestList.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
 
 public sealed record GuestListId
 {

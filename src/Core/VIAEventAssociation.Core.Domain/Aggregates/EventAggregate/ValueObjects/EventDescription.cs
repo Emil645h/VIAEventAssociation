@@ -1,8 +1,8 @@
 ﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
+namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
-public record EventDescription
+public class EventDescription
 {
     internal string Value { get; }
     

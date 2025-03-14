@@ -1,4 +1,4 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.Events.Request.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Request.ValueObjects;
 
 namespace UnitTests.Common.Values.EventTests.RequestTests;
 
