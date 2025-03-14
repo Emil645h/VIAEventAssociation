@@ -6,6 +6,8 @@ public abstract record Result<T> : Result
 {
     public bool IsSuccess => this is Success<T>;
     public bool IsFailure => this is Failure<T>;
+
+    public T Value => this is Success<T> success ? success.Payload : throw new InvalidOperationException("Cannot access value on failure");
     
     public static implicit operator Result<T>(T value) 
         => new Success<T>(value);
@@ -57,7 +59,7 @@ public abstract record Result<T> : Result
     
 }
 
-public record Success<T>(T Value) : Result<T>;
+public record Success<T>(T Payload) : Result<T>;
 
 public record Failure<T>(IEnumerable<ResultError> Errors) : Result<T>;
 

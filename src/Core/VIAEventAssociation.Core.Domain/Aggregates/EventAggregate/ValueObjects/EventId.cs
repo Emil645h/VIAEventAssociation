@@ -10,6 +10,6 @@ public record EventId
 
     public static Result<EventId> Create(Guid eventId)
     {
-        return new Success<EventId>(new EventId(eventId));
+        return new EventId(eventId);
     }
 };

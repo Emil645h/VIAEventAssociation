@@ -1,4 +1,6 @@
-﻿namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
+﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
+
+namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
 
 public record EventMaxGuests
 {
@@ -7,7 +9,7 @@ public record EventMaxGuests
     internal EventMaxGuests(int input) =>
         Value = input;
     
-    public static EventMaxGuests Create(int input)
+    public static Result<EventMaxGuests> Create(int input)
     {
         return new EventMaxGuests(input);
     }

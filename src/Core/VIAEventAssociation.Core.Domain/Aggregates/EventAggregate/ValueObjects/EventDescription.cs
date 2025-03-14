@@ -1,4 +1,6 @@
-﻿namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
+﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
+
+namespace VIAEventAssociation.Core.Domain.Aggregates.Events.ValueObjects;
 
 public record EventDescription
 {
@@ -7,7 +9,7 @@ public record EventDescription
     internal EventDescription(string input) =>
         Value = input;
     
-    public static EventDescription Create(string eventDescription)
+    public static Result<EventDescription> Create(string eventDescription)
     {
         return new EventDescription(eventDescription);
     }
