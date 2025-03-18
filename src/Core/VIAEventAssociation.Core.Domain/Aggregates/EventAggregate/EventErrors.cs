@@ -22,6 +22,14 @@ public static class EventErrors
         
     }
 
+    public static class EventVisibility
+    {
+        private const string EventVisibilityCode = "Event.Visibility";
+        
+        public static readonly ResultError CancelledEventCannotBeModified = new(EventVisibilityCode, "Cancelled events cannot be modified.");
+        public static readonly ResultError ActiveEventCannotBePrivate = new(EventVisibilityCode, "Active events cannot be made private.");
+    }
+
     public static class EventStatus
     {
         private const string EventStatusCode = "Event.Status";
@@ -38,5 +46,40 @@ public static class EventErrors
 
         public static readonly ResultError InvalidEventStatus =
             new(EventDescriptionCode, "Invalid operation when event is active or cancelled.");
+    }
+    
+    public static class EventTime
+    {
+        private const string EventTimeCode = "Event.Time";
+        
+        public static readonly ResultError StartDateAfterEndDate = new(
+            EventTimeCode, "The start date cannot be after the end date.");
+        
+        public static readonly ResultError StartTimeAfterEndTime = new(
+            EventTimeCode, "The start time cannot be after the end time on the same day.");
+        
+        public static readonly ResultError DurationTooShort = new(
+            EventTimeCode, "Event duration must be at least 1 hour.");
+        
+        public static readonly ResultError DurationTooLong = new(
+            EventTimeCode, "Event duration cannot exceed 10 hours.");
+        
+        public static readonly ResultError StartTimeTooEarly = new(
+            EventTimeCode, "Event cannot start before 8:00.");
+        
+        public static readonly ResultError EndTimeTooLate = new(
+            EventTimeCode, "Event cannot end after 01:00.");
+        
+        public static readonly ResultError InvalidTimeSpan = new(
+            EventTimeCode, "Event cannot span the invalid time period between 1:00 AM and 8:00 AM.");
+        
+        public static readonly ResultError StartTimeInPast = new(
+            EventTimeCode, "Event cannot start in the past.");
+        
+        public static readonly ResultError ActiveEventCannotBeModified = new(
+            EventTimeCode, "Cannot update times when event is active.");
+        
+        public static readonly ResultError CancelledEventCannotBeModified = new(
+            EventTimeCode, "Cannot update times when event is cancelled.");
     }
 }

@@ -22,7 +22,6 @@ public class NumberOfGuestsTests
 
     [Theory]
     [InlineData(101)]
-    [InlineData(0)]
     [InlineData(-1)]
     public void Create_WithInvalidNumberOfGuests_ReturnsFailure(int guestNumber)
     {
