@@ -9,8 +9,8 @@ public class EventTitle
     internal EventTitle(string input) =>
         Value = input;
 
-    public static Result<EventTitle> Create(string eventTitle) =>
-        Validate(eventTitle);
+    public static Result<EventTitle> Create(string eventTitle) 
+        => eventTitle == null ? EventErrors.EventTitle.TitleIsNull : Validate(eventTitle);
     
     private static Result<None> CharacterLimit(string eventTitle)
     {
@@ -25,15 +25,10 @@ public class EventTitle
             return EventErrors.EventTitle.TitleIsEmpty;
         return new None();
     }
-    
-    private static Result<None> IsNull(string eventTitle)
-    {
-        if (eventTitle == null)
-            return EventErrors.EventTitle.TitleIsNull;
-        return new None();
-    }
 
     private static Result<EventTitle> Validate(string eventTitle) =>
-        ResultExtensions.AssertAll(() => CharacterLimit(eventTitle),
-            () => IsEmpty(eventTitle), () => IsNull(eventTitle)).WithPayloadIfSuccess(() => new EventTitle(eventTitle));
+        ResultExtensions.AssertAll(
+            () => IsEmpty(eventTitle),
+            () => CharacterLimit(eventTitle))
+            .WithPayloadIfSuccess(() => new EventTitle(eventTitle));
 }

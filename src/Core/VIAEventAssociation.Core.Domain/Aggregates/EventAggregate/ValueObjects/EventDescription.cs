@@ -8,9 +8,23 @@ public class EventDescription
     
     internal EventDescription(string input) =>
         Value = input;
-    
+
     public static Result<EventDescription> Create(string eventDescription)
+        => Validate(eventDescription);
+
+    private static Result<EventDescription> Validate(string eventDescription) =>
+        ResultExtensions.AssertAll(
+            () => MustNotBeLessThan0OrMoreThan250Characters(eventDescription)
+        ).WithPayloadIfSuccess(() => new EventDescription(eventDescription));
+
+    public static Result<None> MustNotBeLessThan0OrMoreThan250Characters(string eventDescription)
     {
-        return new EventDescription(eventDescription);
+        if (eventDescription.Length > 250)
+        {
+            return EventErrors.EventDescription.InvalidCharacterLength;
+        }
+
+        return new None();
     }
+    
 }

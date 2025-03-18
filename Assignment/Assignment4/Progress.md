@@ -18,12 +18,13 @@
   * [X] F4
   * [X] F5
   * [X] F6
-* [] UC3 - Update description
-  * [] S1
-  * [] S2
-  * [] S3
-  * [] F2
-  * [] F3
+* [X] UC3 - Update description
+  * [X] S1
+  * [X] S2
+  * [X] S3
+  * [X] F1
+  * [X] F2
+  * [X] F3
 * [] UC4 - Update start and end time
   * [] S1
   * [] S2

@@ -21,4 +21,22 @@ public static class EventErrors
         public static readonly ResultError InvalidEventStatus = new(EventTitleCode, "Event status is either active or cancelled.");
         
     }
+
+    public static class EventStatus
+    {
+        private const string EventStatusCode = "Event.Status";
+        
+        
+    }
+
+    public static class EventDescription
+    {
+        private const string EventDescriptionCode = "Event.Description";
+
+        public static readonly ResultError InvalidCharacterLength = new(EventDescriptionCode,
+            "Description cannot be less than 0 and longer than 250 characters.");
+
+        public static readonly ResultError InvalidEventStatus =
+            new(EventDescriptionCode, "Invalid operation when event is active or cancelled.");
+    }
 }

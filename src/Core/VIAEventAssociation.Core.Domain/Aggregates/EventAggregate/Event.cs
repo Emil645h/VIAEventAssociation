@@ -48,7 +48,16 @@ public class Event : AggregateRoot<EventId>
         status = EventStatus.Draft;
         return new None();
     }
-    
+
+    public Result<None> UpdateDescription(EventDescription eventDescription)
+    {
+        if (status.Equals(EventStatus.Cancelled) || status.Equals(EventStatus.Active))
+            return EventErrors.EventDescription.InvalidEventStatus;
+
+        description = eventDescription;
+        status = EventStatus.Draft;
+        return new None();
+    }
 
     public Result<None> MakePublic()
     {
