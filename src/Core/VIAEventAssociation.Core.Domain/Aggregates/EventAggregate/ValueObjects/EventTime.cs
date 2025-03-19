@@ -1,4 +1,6 @@
-﻿using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
+﻿using VIAEventAssociation.Core.Domain.Common.Values;
+using VIAEventAssociation.Core.Domain.Contracts;
+using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
@@ -11,9 +13,9 @@ public class EventTime
         => (StartTime, EndTime) = (startTime, endTime);
 
     public static Result<EventTime> Create(DateTime startTime, DateTime endTime)
-        => Validate(startTime, endTime);
+        => Validate(startTime, endTime, new ActualCurrentTime());
 
-    private static Result<EventTime> Validate(DateTime startTime, DateTime endTime)
+    private static Result<EventTime> Validate(DateTime startTime, DateTime endTime, ICurrentTime currentTime)
         => ResultExtensions.AssertAll(
             () => ValidateStartDateNotAfterEndDate(startTime, endTime),
             () => ValidateStartTimeNotAfterEndTimeOnSameDay(startTime, endTime),
@@ -22,7 +24,7 @@ public class EventTime
             () => ValidateStartTimeNotBefore08(startTime),
             () => ValidateEndTimeNotAfter01(startTime, endTime),
             () => ValidateDoesNotSpanInvalidTimeSlot(startTime, endTime),
-            () => ValidateStartTimeIsInFuture(startTime)
+            () => ValidateStartTimeIsInFuture(startTime, currentTime)
             ).WithPayloadIfSuccess(() => new EventTime(startTime, endTime));
 
     private static Result<None> ValidateStartDateNotAfterEndDate(DateTime startTime, DateTime endTime)
@@ -108,9 +110,9 @@ public class EventTime
         return new None();
     }
     
-    private static Result<None> ValidateStartTimeIsInFuture(DateTime startTime)
+    private static Result<None> ValidateStartTimeIsInFuture(DateTime startTime, ICurrentTime currentTime)
     {
-        if (startTime < DateTime.Now)
+        if (startTime < currentTime.GetCurrentTime())
         {
             return EventErrors.EventTime.StartTimeInPast;
         }

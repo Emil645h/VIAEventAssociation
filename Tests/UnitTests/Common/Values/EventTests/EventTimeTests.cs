@@ -1,17 +1,34 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
+using VIAEventAssociation.Core.Domain.Common.Values;
+using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace UnitTests.Common.Values.EventTests.EventMethodTests;
+namespace UnitTests.Common.Values.EventTests;
 
 public class EventTimeTests
 {
     private readonly Event _event;
+    private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2050, 1, 1, 12, 0, 0));
     
     public EventTimeTests()
     {
         var eventId = EventId.Create(Guid.NewGuid()).Value;
         _event = Event.Create(eventId).Value;
+        
+        // Set valid title
+        var title = EventTitle.Create("Valid Title").Value;
+        _event.UpdateTitle(title);
+        
+        // Set valid time (in the future)
+        var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
+        var endTime = startTime.AddHours(3);
+        var eventTime = EventTime.Create(startTime, endTime).Value;
+        _event.UpdateTime(eventTime);
+        
+        // Set valid max guests
+        var maxGuests = EventMaxGuests.Create(20).Value;
+        _event.UpdateMaxGuests(maxGuests);
     }
 
     // Success scenario tests
@@ -64,9 +81,9 @@ public class EventTimeTests
     public void Update_ReadyStatus_ChangesToDraft()
     {
         // Arrange
-        _event.SetReadyStatus();
-        var startTime = DateTime.Now.AddDays(1).Date.AddHours(10);
-        var endTime = startTime.AddHours(10);
+        _event.SetReadyStatus(_defaultTime);
+        var startTime = new DateTime(2050,1,2,12,0,0);
+        var endTime = startTime.AddHours(5);
         var eventTime = EventTime.Create(startTime, endTime).Value;
 
         // Act
@@ -208,7 +225,7 @@ public class EventTimeTests
     public void Update_ActiveEvent_ReturnsFailure()
     {
         // Arrange
-        _event.SetActiveStatus();
+        _event.SetActiveStatus(_defaultTime);
         var startTime = DateTime.Now.AddDays(1).Date.AddHours(10);
         var endTime = startTime.AddHours(4);
         var eventTime = EventTime.Create(startTime, endTime).Value;

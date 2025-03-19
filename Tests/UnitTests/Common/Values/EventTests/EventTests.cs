@@ -25,4 +25,6 @@ public class EventTests
         Assert.Equal("Working Title", result.Value.title.Value);
         Assert.Equal("", result.Value.description.Value);
     }
+    
+    
 }

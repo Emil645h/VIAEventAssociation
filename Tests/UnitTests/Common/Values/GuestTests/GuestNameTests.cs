@@ -8,9 +8,7 @@ public class GuestNameTests
 {
     [Theory]
     [InlineData("Emil")]
-    [InlineData("Anne-Marie")]
-    [InlineData("Quistgaard Brügge")]
-    [InlineData("O'Connor")]
+    [InlineData("Brugge")]
     public void Create_WithValidName_ReturnsFirstOrLastName(string name)
     {
         // Act
@@ -29,10 +27,11 @@ public class GuestNameTests
         Assert.Equal(name, lastName.Value);
     }
 
+    // UC 10, F3, F4 & F6
     [Theory]
-    [InlineData("Emil1")]
-    [InlineData("Anne-Marie!")]
-    [InlineData("Anne-Marie@")]
+    [InlineData("Emil1")] // Has a number
+    [InlineData("Anne-Marie!")] // Has a special character
+    [InlineData("Anne-Marie")] // Has "-"
     public void Create_WithInvalidName_ReturnsFailure(string name)
     {
         // Act
@@ -48,7 +47,28 @@ public class GuestNameTests
         Assert.Contains(firstNameFailure.Errors, e => e == GuestErrors.FirstName.InvalidCharacters);
         Assert.Contains(lastNameFailure.Errors, e => e == GuestErrors.LastName.InvalidCharacters);
     }
+    
+    // UC 10, F3 & F4
+    [Theory]
+    [InlineData("a")] // Too short
+    [InlineData("abcdefghijklmnopqrstuvwxyz")] // Too long (26 characters)
+    public void Create_WithInvalidNameLength_ReturnsFailure(string name)
+    {
+        // Act
+        var firstNameResult = FirstName.Create(name);
+        var lastNameResult = LastName.Create(name);
+        
+        // Assert
+        Assert.True(firstNameResult.IsFailure);
+        Assert.True(lastNameResult.IsFailure);
 
+        var firstNameFailure = Assert.IsType<Failure<FirstName>>(firstNameResult);
+        var lastNameFailure = Assert.IsType<Failure<LastName>>(lastNameResult);
+        Assert.Contains(firstNameFailure.Errors, e => e == GuestErrors.FirstName.InvalidLength);
+        Assert.Contains(lastNameFailure.Errors, e => e == GuestErrors.LastName.InvalidLength);
+    }
+
+    // UC 10, F3 & F4
     [Theory]
     [InlineData(null)]
     [InlineData("")]

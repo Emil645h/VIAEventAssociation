@@ -51,11 +51,43 @@
   * [X] F1
   * [X] F2
 * [ ] UC7 - Set maximum number of guests
-  * [ ] S1
-  * [ ] S2
-  * [ ] S3
-  * [ ] F1
-  * [ ] F2
+  * [X] S1
+  * [X] S2
+  * [X] S3
+  * [X] F1
+  * [X] F2
   * [ ] F3
-  * [ ] F4
+  * [X] F4
+  * [X] F5
+* [X] UC8 - Readies an event
+  * [X] S1
+  * [X] F1
+  * [X] F2
+  * [X] F3
+  * [X] F4
+* [X] UC9 - Activates an event
+  * [X] S1
+  * [X] S2
+  * [X] S3
+  * [X] F1
+  * [X] F2
+* [ ] UC10 - Anonymous user registers a new guest account
+  * [X] S1
+  * [X] F1
+  * [X] F2
+  * [X] F3
+  * [X] F4 
   * [ ] F5
+  * [X] F6
+  * [X] F7
+* [X] UC11 - Guest participates in public event
+  * [X] S1
+  * [X] F1
+  * [X] F2
+  * [X] F3
+  * [X] F4
+  * [X] F5
+* [X] UC12 - Guest cancels event participation
+  * [X] S1
+  * [X] S2
+  * [X] F1

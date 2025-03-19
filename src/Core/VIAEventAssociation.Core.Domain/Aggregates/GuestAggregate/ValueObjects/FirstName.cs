@@ -7,7 +7,7 @@ public class FirstName
 {
     internal string Value { get; }
     
-    internal FirstName(string input) => Value = input;
+    private FirstName(string input) => Value = FormatName(input);
     
     public static Result<FirstName> Create(string firstName) => 
     string.IsNullOrWhiteSpace(firstName)
@@ -15,15 +15,33 @@ public class FirstName
     
     private static Result<FirstName> Validate(string firstName) =>
     ResultExtensions.AssertAll(
-        () => MustContainValidCharacters(firstName)
+        () => MustHaveValidLength(firstName),
+        () => MustContainOnlyLetters(firstName)
         ).WithPayloadIfSuccess(() => new FirstName(firstName));
 
-    private static Result<None> MustContainValidCharacters(string firstName)
+    private static Result<None> MustHaveValidLength(string firstName)
     {
-        Regex regex = new(@"^[\p{L}]+(?:[\s'-][\p{L}]+)*$");
+        if (firstName.Length < 2 || firstName.Length > 25)
+            return GuestErrors.FirstName.InvalidLength;
+
+        return new None();
+    }
+    
+    private static Result<None> MustContainOnlyLetters(string firstName)
+    {
+        Regex regex = new(@"^[a-zA-Z]+$");
         Match match = regex.Match(firstName);
         if (!match.Success)
             return GuestErrors.FirstName.InvalidCharacters;
-        return new Success<None>(new None());
+
+        return new None();
+    }
+
+    private static string FormatName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return name;
+
+        return char.ToUpper(name[0]) + name.Substring(1).ToLower();
     }
 }

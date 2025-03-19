@@ -9,13 +9,14 @@ public class Guest : AggregateRoot<GuestId>
     internal FirstName firstName;
     internal LastName lastName;
     internal ViaEmail email;
+    internal ProfilePictureUrl profilePictureUrl;
     
-    private Guest(GuestId id, FirstName firstName, LastName lastName, ViaEmail email) : base(id) 
-        => (this.firstName, this.lastName, this.email) = (firstName, lastName, email);
+    private Guest(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) : base(id) 
+        => (this.firstName, this.lastName, this.email, this.profilePictureUrl) = (firstName, lastName, email, profilePictureUrl);
     
-    public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email) 
-        => new Guest(id, firstName, lastName, email);
-
+    public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) 
+        => new Guest(id, firstName, lastName, email, profilePictureUrl);
+    
     public Result<None> UpdateViaEmail(ViaEmail viaEmail)
     {
         if (viaEmail == null)
@@ -39,6 +40,15 @@ public class Guest : AggregateRoot<GuestId>
             return GuestErrors.LastName.LastNameIsEmpty;
         
         lastName = newName;
+        return new None();
+    }
+
+    public Result<None> UpdateProfilePictureUrl(ProfilePictureUrl newUrl)
+    {
+        if (newUrl == null)
+            return GuestErrors.ProfilePictureUrl.UrlIsEmpty;
+        
+        profilePictureUrl = newUrl;
         return new None();
     }
 }

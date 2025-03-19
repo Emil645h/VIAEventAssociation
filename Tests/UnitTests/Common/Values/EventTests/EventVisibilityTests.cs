@@ -1,16 +1,33 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
+using VIAEventAssociation.Core.Domain.Common.Values;
+using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace UnitTests.Common.Values.EventTests;
 
 public class EventVisibilityTests
 {
+    private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2050, 1, 1, 12, 0, 0));
     private Event CreateEvent(EventStatus status, EventVisibility visibility)
     {
         var eventId = EventId.Create(Guid.NewGuid()).Value;
         var _event = Event.Create(eventId).Value;
 
+        // Set valid title
+        var title = EventTitle.Create("Valid Title").Value;
+        _event.UpdateTitle(title);
+        
+        // Set valid time (in the future)
+        var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
+        var endTime = startTime.AddHours(3);
+        var eventTime = EventTime.Create(startTime, endTime).Value;
+        _event.UpdateTime(eventTime);
+        
+        // Set valid max guests
+        var maxGuests = EventMaxGuests.Create(20).Value;
+        _event.UpdateMaxGuests(maxGuests);
+        
         if (visibility.Equals(EventVisibility.Public))
         {
             _event.MakePublic();
@@ -18,11 +35,11 @@ public class EventVisibilityTests
         
         if (status.Equals(EventStatus.Ready))
         {
-            _event.SetReadyStatus();
+            _event.SetReadyStatus(_defaultTime);
         }
         else if (status.Equals(EventStatus.Active))
         {
-            _event.SetActiveStatus();
+            _event.SetActiveStatus(_defaultTime);
         }
         else if (status.Equals(EventStatus.Cancelled))
         {

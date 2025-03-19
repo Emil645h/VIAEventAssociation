@@ -27,4 +27,16 @@ public class GuestList : Entity<GuestListId>
 
         return new None();
     }
+
+    public Result<None> RemoveFromGuestList(GuestId guestId)
+    {
+        if (guestId == null)
+            return GuestListErrors.AssignToGuestList.GuestIsEmpty;
+
+        if (!guests.Contains(guestId))
+            return new None();
+        
+        guests.Remove(guestId);
+        return new None();
+    }
 }

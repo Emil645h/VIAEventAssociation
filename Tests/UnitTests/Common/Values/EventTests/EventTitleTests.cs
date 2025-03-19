@@ -1,11 +1,15 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
+using VIAEventAssociation.Core.Domain.Common.Values;
+using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace UnitTests.Common.Values.EventTests.EventMethodTests;
+namespace UnitTests.Common.Values.EventTests;
 
 public class EventTitleTests
 {
+    private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2025, 1, 1, 12, 0, 0));
+
     //UC2 - S1
     [Fact]
     public void Update_TitleOfEvent_ReturnsSuccess()
@@ -31,7 +35,7 @@ public class EventTitleTests
         // Arrange
         var id = EventId.Create(Guid.NewGuid()).Value;
         var eventResult = Event.Create(id);
-        eventResult.Value.SetReadyStatus();
+        eventResult.Value.SetReadyStatus(_defaultTime);
         var newTitle = EventTitle.Create("New Title").Value;
 
         // Act
@@ -130,7 +134,7 @@ public class EventTitleTests
         var id = EventId.Create(Guid.NewGuid()).Value;
         var evt = Event.Create(id).Value;
         var newTitle = EventTitle.Create("Hejjjjj").Value;
-        evt.SetActiveStatus();
+        evt.SetActiveStatus(_defaultTime);
 
 
         // Act

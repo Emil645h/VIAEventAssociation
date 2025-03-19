@@ -1,7 +1,11 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
+﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
+using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
 using VIAEventAssociation.Core.Domain.Common.Bases;
+using VIAEventAssociation.Core.Domain.Common.Values;
+using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
@@ -67,7 +71,31 @@ public class Event : AggregateRoot<EventId>
             return EventErrors.EventTime.CancelledEventCannotBeModified;
         
         this.eventTime = eventTime;
-        status = EventStatus.Draft;
+        
+        if (status.Equals(EventStatus.Ready))
+            status = EventStatus.Draft;
+        
+        return new None();
+    }
+
+    public Result<None> UpdateMaxGuests(EventMaxGuests eventMaxGuests)
+    {
+        if (status.Equals(EventStatus.Cancelled))
+            return EventErrors.EventMaxGuests.CancelledEventCannotBeModified;
+
+        if (status.Equals(EventStatus.Active) && eventMaxGuests.Value < this.maxGuests.Value)
+            return EventErrors.EventMaxGuests.CannotBeReduced;
+
+        if (locationId != null)
+        {
+            // TODO: Need to check if location capacity is smaller than the new maxGuest value.
+            // E.g. something like:
+            // var locationcapacity = GetLocationCapacity(locationId.Value);
+            // if (eventMaxGuests.Value > locationCapacity)
+            //     return EventErrors.EventMaxGuests.ExceedsLocationCapacity;
+        }
+        maxGuests = eventMaxGuests;
+        
         return new None();
     }
 
@@ -99,15 +127,48 @@ public class Event : AggregateRoot<EventId>
         return new None();
     }
 
-    public Result<None> SetReadyStatus()
+    public Result<None> SetReadyStatus(ICurrentTime currentTime)
     {
+        if (status.Equals(EventStatus.Cancelled))
+            return EventErrors.EventReadyStatus.CancelledEventCannotBeReadied;
+        
+        if (!status.Equals(EventStatus.Draft))
+            return EventErrors.EventReadyStatus.NotInDraftStatus;
+        
+        if (title.Value.Equals("Working Title"))
+            return EventErrors.EventReadyStatus.TitleIsDefault;
+        
+        if (eventTime == null)
+            return EventErrors.EventReadyStatus.TimesNotSet;
+        
+        if (eventTime.StartTime < currentTime.GetCurrentTime())
+            return EventErrors.EventReadyStatus.StartTimeInPast;
+
+        if (maxGuests.Value < 5 || maxGuests.Value > 50)
+            return EventErrors.EventReadyStatus.MaxGuestsInvalid;
+        
         status = EventStatus.Ready;
         return new None();
     }
     
-    public Result<None> SetActiveStatus()
+    public Result<None> SetActiveStatus(ICurrentTime currentTime)
     {
+        if (status.Equals(EventStatus.Active))
+            return new None();
+        
+        if (status.Equals(EventStatus.Cancelled))
+            return EventErrors.EventActiveStatus.CancelledEventCannotBeActivated;
+
+        if (status.Equals(EventStatus.Draft))
+        {
+            var readyResult = SetReadyStatus(currentTime);
+            
+            if (readyResult.IsFailure)
+                return readyResult;
+        }
+        
         status = EventStatus.Active;
+        
         return new None();
     }
     
@@ -115,5 +176,30 @@ public class Event : AggregateRoot<EventId>
     {
         status = EventStatus.Cancelled;
         return new None();
+    }
+
+    public Result<None> AssignGuestToGuestList(Guest guest, ICurrentTime currentTime)
+    {
+        if (!status.Equals(EventStatus.Active))
+            return GuestListErrors.Participation.EventNotActive;
+
+        if (!visibility.Equals(EventVisibility.Public))
+            return GuestListErrors.Participation.EventIsPrivate;
+        
+        if (eventTime == null || eventTime.StartTime <= currentTime.GetCurrentTime())
+            return GuestListErrors.Participation.EventAlreadyStarted;
+
+        if (guestList.numberOfGuests >= maxGuests.Value)
+            return GuestListErrors.Participation.NoMoreRoom;
+
+        return guestList.AssignToGuestList(guest.Id);
+    }
+
+    public Result<None> RemoveGuestFromGuestList(Guest guest, ICurrentTime currentTime)
+    {
+        if (eventTime != null && eventTime.StartTime <= currentTime.GetCurrentTime())
+            return GuestListErrors.Participation.CannotCancelPastEvent;
+        
+        return guestList.RemoveFromGuestList(guest.Id);
     }
 }

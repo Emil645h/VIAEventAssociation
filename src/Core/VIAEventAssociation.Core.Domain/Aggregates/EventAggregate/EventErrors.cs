@@ -30,11 +30,56 @@ public static class EventErrors
         public static readonly ResultError ActiveEventCannotBePrivate = new(EventVisibilityCode, "Active events cannot be made private.");
     }
 
-    public static class EventStatus
+    public static class EventReadyStatus
     {
-        private const string EventStatusCode = "Event.Status";
+        private const string EventStatusCode = "Event.Status.Ready";
         
+        public static readonly ResultError TitleIsDefault = new(
+            EventStatusCode, "The event title must be changed from the default value.");
+            
+        public static readonly ResultError TimesNotSet = new(
+            EventStatusCode, "Event times must be set before the event can be made ready.");
+            
+        public static readonly ResultError VisibilityNotSet = new(
+            EventStatusCode, "Event visibility must be set before the event can be made ready.");
+            
+        public static readonly ResultError MaxGuestsInvalid = new(
+            EventStatusCode, "Maximum guests must be between 5 and 50 before the event can be made ready.");
+            
+        public static readonly ResultError StartTimeInPast = new(
+            EventStatusCode, "An event in the past cannot be made ready.");
+            
+        public static readonly ResultError CancelledEventCannotBeReadied = new(
+            EventStatusCode, "A cancelled event cannot be readied.");
+            
+        public static readonly ResultError NotInDraftStatus = new(
+            EventStatusCode, "Only events in draft status can be made ready.");
+    }
+
+    public static class EventActiveStatus
+    {
+        private const string EventActiveStatusCode = "Event.Status.Active";
         
+        public static readonly ResultError CancelledEventCannotBeActivated = new(
+            EventActiveStatusCode, "A cancelled event cannot be activated.");
+    }
+
+    public static class EventMaxGuests
+    {
+        private const string EventMaxGuestsCode = "Event.MaxGuests";
+        
+        public static readonly ResultError IsNull = new(EventMaxGuestsCode, "The events max guest amount cannot be null.");
+
+        public static readonly ResultError TooSmall = new(EventMaxGuestsCode,
+            "The maximum number of guests cannot be less than 5.");
+        public static readonly ResultError TooLarge = new(EventMaxGuestsCode,
+            "The maximum number of guests cannot be larger than 50.");
+        public static readonly ResultError CannotBeReduced = new(EventMaxGuestsCode,
+            "The maximum number of guests of an active event cannot be reduced (only increased).");
+        public static readonly ResultError CancelledEventCannotBeModified = new(EventMaxGuestsCode,
+            "Cancelled events cannot be modified.");
+        public static readonly ResultError ExceedsLocationCapacity = new(EventMaxGuestsCode,
+            "The maximum number of guests cannot exceed the location's maximum capacity.");
     }
 
     public static class EventDescription

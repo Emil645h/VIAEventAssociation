@@ -12,20 +12,18 @@ public class GuestTests : IDisposable
     private readonly LastName lastName;
     private readonly ViaEmail viaEmail;
     private readonly Guest guest;
+    private readonly ProfilePictureUrl profilePictureUrl;
+    
+    // TODO: Add mocking for a future service that checks if email is already registered in DB.
     
     public GuestTests()
     {
-        var idResult = GuestId.Create(Guid.NewGuid());
-        var emailResult = ViaEmail.Create("331458@via.dk");
-        var firstNameResult = FirstName.Create("Emil");
-        var lastNameResult = LastName.Create("Brügge");
-        guestId = ((Success<GuestId>)idResult).Value;
-        viaEmail = ((Success<ViaEmail>)emailResult).Value;
-        firstName = ((Success<FirstName>)firstNameResult).Value;
-        lastName = ((Success<LastName>)lastNameResult).Value;
-        var guestResult = Guest.Create(guestId, firstName, lastName, viaEmail);
-        
-        guest = ((Success<Guest>)guestResult).Value;
+        guestId = GuestId.Create(Guid.NewGuid()).Value;
+        viaEmail = ViaEmail.Create("331458@via.dk").Value;
+        firstName = FirstName.Create("Emil").Value;
+        lastName = LastName.Create("Brugge").Value;
+        profilePictureUrl = ProfilePictureUrl.Create("https://via.dk/someImage").Value;
+        guest = Guest.Create(guestId, firstName, lastName, viaEmail, profilePictureUrl).Value;
     }
 
     public void Dispose()
@@ -33,12 +31,13 @@ public class GuestTests : IDisposable
         // Nothing
     }
     
+    // UC 10, S1
     [Fact]
     public void Create_WithAllValidData_ReturnsGuest()
     {
         
         // Act
-        var guestResult = Guest.Create(guestId, firstName, lastName, viaEmail);
+        var guestResult = Guest.Create(guestId, firstName, lastName, viaEmail, profilePictureUrl);
         
         // Assert
         Assert.True(guestResult.IsSuccess);
@@ -48,8 +47,41 @@ public class GuestTests : IDisposable
         Assert.Equal(firstName, guest.firstName);
         Assert.Equal(lastName, guest.lastName);
         Assert.Equal(viaEmail, guest.email);
+        Assert.Equal(profilePictureUrl, guest.profilePictureUrl);
     }
 
+    // UC 10, F5
+    [Fact]
+    public async Task Create_EmailAlreadyRegistered_ReturnsFailure()
+    {
+        // TODO: Implement when DB attached.
+    }
+    
+    [Theory]
+    [InlineData("john", "smith", "abcd@via.dk", "http://example.com/profile.jpg", "John", "Smith", "abcd@via.dk")]
+    [InlineData("JOHN", "SMITH", "ABCD@via.dk", "http://example.com/profile.jpg", "John", "Smith", "abcd@via.dk")]
+    [InlineData("jOhN", "sMiTh", "AbCd@VIA.DK", "http://example.com/profile.jpg", "John", "Smith", "abcd@via.dk")]
+    public async Task Create_FormatsCasing_Correctly(
+        string inputFirstName, string inputLastName, string inputEmail, string profilePictureUrl,
+        string expectedFirstName, string expectedLastName, string expectedEmail)
+    {
+        // Arrange
+        var firstName = FirstName.Create(inputFirstName).Value;
+        var lastName = LastName.Create(inputLastName).Value;
+        var email = ViaEmail.Create(inputEmail).Value;
+        var profilePicUrl = ProfilePictureUrl.Create(profilePictureUrl).Value;
+        
+        // Act
+        var result = Guest.Create(guestId, firstName, lastName, email, profilePicUrl);
+        
+        // Assert
+        Assert.True(result.IsSuccess);
+        var guest = result.Value;
+        Assert.Equal(expectedFirstName, guest.firstName.Value);
+        Assert.Equal(expectedLastName, guest.lastName.Value);
+        Assert.Equal(expectedEmail, guest.email.Value);
+    }
+    
     #region UpdateViaEmail Tests
 
     [Fact]

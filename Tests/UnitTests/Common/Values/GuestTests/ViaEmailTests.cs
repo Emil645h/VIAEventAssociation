@@ -8,7 +8,7 @@ public class ViaEmailTests
 {
     [Theory]
     [InlineData("123456@via.dk")]
-    [InlineData("123456@viauc.dk")]
+    [InlineData("eqb@via.dk")]
     [InlineData("trmo@via.dk")]
     public void Create_WithValidEmail_ReturnsViaEmail(string email)
     {
@@ -36,6 +36,7 @@ public class ViaEmailTests
         Assert.Contains(failure.Errors, e => e == GuestErrors.ViaEmail.EmailIsEmpty);
     }
 
+    // UC 10, F1
     [Theory]
     [InlineData("testdomain.com")]
     [InlineData("test@domain.co.uk")]
@@ -49,6 +50,7 @@ public class ViaEmailTests
         Assert.Contains(failure.Errors, e => e == GuestErrors.ViaEmail.MustViaEmail);
     }
 
+    // UC 10, F2
     [Theory]
     [InlineData("@some.dk")]
     [InlineData("someEmail.dk")]

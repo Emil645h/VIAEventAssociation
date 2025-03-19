@@ -2,7 +2,7 @@
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
-namespace UnitTests.Common.Values.EventTests.EventMethodTests;
+namespace UnitTests.Common.Values.EventTests;
 
 public class EventDescriptionTests
 {
