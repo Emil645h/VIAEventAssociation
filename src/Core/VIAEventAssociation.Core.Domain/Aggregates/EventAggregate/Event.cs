@@ -42,12 +42,12 @@ public class Event : AggregateRoot<EventId>
         return new Event(id, title, description, null, visibility, status, maxGuests, guestList, null);
     }
     
-    public Result<None> UpdateTitle(EventTitle title)
+    public Result<None> UpdateTitle(EventTitle evtTitle)
     {
-        if (status.Equals(EventStatus.Active) || status.Equals(EventStatus.Cancelled))
+        if (status.Equals(EventStatus.Cancelled) || status.Equals(EventStatus.Active))
             return EventErrors.EventTitle.InvalidEventStatus;
         
-        this.title = title;
+        title = evtTitle;
         status = EventStatus.Draft;
         return new None();
     }
@@ -153,22 +153,23 @@ public class Event : AggregateRoot<EventId>
     
     public Result<None> SetActiveStatus(ICurrentTime currentTime)
     {
+        
+        if (title.Value.Equals("Working Title"))
+            return EventErrors.EventActiveStatus.TitleIsDefault;
+        
         if (status.Equals(EventStatus.Active))
             return new None();
         
         if (status.Equals(EventStatus.Cancelled))
             return EventErrors.EventActiveStatus.CancelledEventCannotBeActivated;
-
-        if (status.Equals(EventStatus.Draft))
-        {
-            var readyResult = SetReadyStatus(currentTime);
-            
-            if (readyResult.IsFailure)
-                return readyResult;
-        }
+        
+        if (eventTime == null)
+            return EventErrors.EventActiveStatus.TimesNotSet;
+        
+        if (eventTime.StartTime < currentTime.GetCurrentTime())
+            return EventErrors.EventActiveStatus.StartTimeInPast;
         
         status = EventStatus.Active;
-        
         return new None();
     }
     

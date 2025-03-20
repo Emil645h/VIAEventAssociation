@@ -62,6 +62,15 @@ public static class EventErrors
         
         public static readonly ResultError CancelledEventCannotBeActivated = new(
             EventActiveStatusCode, "A cancelled event cannot be activated.");
+        
+        public static readonly ResultError TimesNotSet = new(
+            EventActiveStatusCode, "Event times must be set before the event can be made ready.");
+        
+        public static readonly ResultError StartTimeInPast = new(
+            EventActiveStatusCode, "An event in the past cannot be made ready.");
+        
+        public static readonly ResultError TitleIsDefault = new(
+            EventActiveStatusCode, "The event title must be changed from the default value.");
     }
 
     public static class EventMaxGuests

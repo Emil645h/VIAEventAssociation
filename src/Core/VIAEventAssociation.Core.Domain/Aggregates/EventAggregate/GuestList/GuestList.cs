@@ -39,4 +39,10 @@ public class GuestList : Entity<GuestListId>
         guests.Remove(guestId);
         return new None();
     }
+    
+    public bool IsGuestParticipating(GuestId guestId)
+    {
+        return guests.Contains(guestId);
+    }
+
 }

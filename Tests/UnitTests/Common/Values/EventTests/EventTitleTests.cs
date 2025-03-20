@@ -8,7 +8,41 @@ namespace UnitTests.Common.Values.EventTests;
 
 public class EventTitleTests
 {
-    private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2025, 1, 1, 12, 0, 0));
+    private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2026, 1, 1, 12, 0, 0));
+    
+    private Event CreateValidActivePublicEvent()
+    {
+        // Create a valid event
+        var eventId = EventId.Create(Guid.NewGuid()).Value;
+        var _event = Event.Create(eventId).Value;
+        
+        // Set valid title
+        var title = EventTitle.Create("Valid Public Event").Value;
+        _event.UpdateTitle(title);
+        
+        // Set valid description
+        var description = EventDescription.Create("A valid public event for testing").Value;
+        _event.UpdateDescription(description);
+        
+        // Set valid time (in the future)
+        var startTime = _defaultTime.GetCurrentTime().AddHours(1);
+        var endTime = startTime.AddHours(3);
+        var eventTime = EventTime.Create(startTime, endTime).Value;
+        _event.UpdateTime(eventTime);
+        
+        // Set valid max guests
+        var maxGuests = EventMaxGuests.Create(5).Value;
+        _event.UpdateMaxGuests(maxGuests);
+        
+        // Make it public
+        _event.MakePublic();
+        
+        // Set active status
+        _event.SetActiveStatus(_defaultTime);
+        
+        return _event;
+    }
+    
 
     //UC2 - S1
     [Fact]
@@ -131,10 +165,8 @@ public class EventTitleTests
     public void Update_TitleOfEventWhenEventIsActive_ReturnsFailure()
     {
         // Arrange
-        var id = EventId.Create(Guid.NewGuid()).Value;
-        var evt = Event.Create(id).Value;
+        var evt = CreateValidActivePublicEvent();
         var newTitle = EventTitle.Create("Hejjjjj").Value;
-        evt.SetActiveStatus(_defaultTime);
 
 
         // Act
@@ -142,7 +174,7 @@ public class EventTitleTests
 
 
         // Assert
-        Assert.NotNull(newTitleResult);
+        Assert.Equal(EventStatus.Active, evt.status);
         Assert.True(newTitleResult.IsFailure);
         var resultFailure = Assert.IsType<Failure<None>>(newTitleResult);
         Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventTitle.InvalidEventStatus);

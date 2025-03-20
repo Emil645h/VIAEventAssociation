@@ -91,3 +91,21 @@
   * [X] S1
   * [X] S2
   * [X] F1
+* [X] UC13 - Guest is invited to event
+  * [X] S1
+  * [X] F1
+  * [X] F2
+  * [X] F3
+  * [X] F4
+* [] UC14 - Guest accepts invitation
+  * [X] S1
+  * [X] F1
+  * [X] F2
+  * [X] F3
+  * [X] F4
+  * [] F5
+* [X] UC15 - Guest declines invitation
+  * [X] S1
+  * [X] S2
+  * [X] F1
+  * [X] F2

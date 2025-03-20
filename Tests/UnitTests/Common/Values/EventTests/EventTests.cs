@@ -6,6 +6,7 @@ namespace UnitTests.Common.Values.EventTests;
 
 public class EventTests
 {
+    
     //UC S1-S4
     [Fact]
     public void Create_EmptyEvent_ReturnsEvent()

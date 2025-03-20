@@ -254,7 +254,7 @@ public class EventStatusTests
         
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventReadyStatus.TitleIsDefault);
+        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventActiveStatus.TitleIsDefault);
     }
     
     // F1
@@ -274,11 +274,11 @@ public class EventStatusTests
         
         // Act
         var result = _event.SetActiveStatus(_defaultTime);
-        var resultFailure = Assert.IsType<Failure<None>>(result);
         
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventReadyStatus.TimesNotSet);
+        var resultFailure = Assert.IsType<Failure<None>>(result);
+        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventActiveStatus.TimesNotSet);
     }
     
     // F1
@@ -297,7 +297,7 @@ public class EventStatusTests
         
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventReadyStatus.StartTimeInPast);
+        Assert.Contains(resultFailure.Errors, e => e == EventErrors.EventActiveStatus.StartTimeInPast);
     }
 
     #endregion
