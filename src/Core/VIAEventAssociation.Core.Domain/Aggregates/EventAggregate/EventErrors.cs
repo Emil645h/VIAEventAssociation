@@ -136,4 +136,24 @@ public static class EventErrors
         public static readonly ResultError CancelledEventCannotBeModified = new(
             EventTimeCode, "Cannot update times when event is cancelled.");
     }
+
+    public static class Invitation
+    {
+        private const string InvitationCode = "Event.Invitation";
+        
+        public static readonly ResultError InvitationNotFound = new(
+            InvitationCode, "The guest is not invited to this event.");
+            
+        public static readonly ResultError EventFull = new(
+            InvitationCode, "The event is full.");
+            
+        public static readonly ResultError EventCancelled = new(
+            InvitationCode, "Cancelled events cannot be joined.");
+            
+        public static readonly ResultError EventNotActive = new(
+            InvitationCode, "The event cannot yet be joined.");
+            
+        public static readonly ResultError EventInPast = new(
+            InvitationCode, "Past events cannot be joined.");
+    }
 }

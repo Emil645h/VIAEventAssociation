@@ -103,7 +103,7 @@
   * [X] F2
   * [X] F3
   * [X] F4
-  * [] F5
+  * [ ] F5
 * [X] UC15 - Guest declines invitation
   * [X] S1
   * [X] S2

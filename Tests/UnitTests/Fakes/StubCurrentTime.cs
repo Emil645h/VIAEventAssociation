@@ -1,6 +1,6 @@
 ﻿using VIAEventAssociation.Core.Domain.Contracts;
 
-namespace VIAEventAssociation.Core.Domain.Common.Values;
+namespace UnitTests.Fakes;
 
 public class StubCurrentTime : ICurrentTime
 {

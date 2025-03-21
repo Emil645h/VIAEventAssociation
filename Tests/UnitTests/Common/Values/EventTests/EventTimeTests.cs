@@ -1,4 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
+﻿using UnitTests.Fakes;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
@@ -10,6 +11,7 @@ public class EventTimeTests
 {
     private readonly Event _event;
     private readonly ICurrentTime _defaultTime = new StubCurrentTime(new DateTime(2050, 1, 1, 12, 0, 0));
+    private readonly ICurrentTime _eventTime = new StubCurrentTime(new DateTime(2050, 1, 2, 12, 0, 0));
     
     public EventTimeTests()
     {
@@ -23,7 +25,7 @@ public class EventTimeTests
         // Set valid time (in the future)
         var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests
@@ -34,17 +36,17 @@ public class EventTimeTests
     // Success scenario tests
     // S1
     [Theory]
-    [InlineData("2023-08-25 19:00", "2023-08-25 23:59")]
-    [InlineData("2023-08-25 12:00", "2023-08-25 16:30")]
-    [InlineData("2023-08-25 08:00", "2023-08-25 12:15")]
-    [InlineData("2023-08-25 10:00", "2023-08-25 20:00")]
-    [InlineData("2023-08-25 13:00", "2023-08-25 23:00")]
+    [InlineData("2050-08-25 19:00", "2050-08-25 23:59")]
+    [InlineData("2050-08-25 12:00", "2050-08-25 16:30")]
+    [InlineData("2050-08-25 08:00", "2050-08-25 12:15")]
+    [InlineData("2050-08-25 10:00", "2050-08-25 20:00")]
+    [InlineData("2050-08-25 13:00", "2050-08-25 23:00")]
     public void Update_ValidTimesSameDay_ReturnsEventTime(string startTimeStr, string endTimeStr)
     {
         // Arrange
         var startTime = DateTime.Parse(startTimeStr).AddYears(10); // Ensure it's in the future
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
 
         // Act
         var result = _event.UpdateTime(eventTime);
@@ -57,15 +59,15 @@ public class EventTimeTests
 
     // S2
     [Theory]
-    [InlineData("2023-08-25 19:00", "2023-08-26 01:00")]
-    [InlineData("2023-08-25 12:00", "2023-08-25 16:30")]
-    [InlineData("2023-08-25 08:00", "2023-08-25 12:15")]
+    [InlineData("2050-08-25 19:00", "2050-08-26 01:00")]
+    [InlineData("2050-08-25 12:00", "2050-08-25 16:30")]
+    [InlineData("2050-08-25 08:00", "2050-08-25 12:15")]
     public void Update_ValidTimesDifferentDays_ReturnsEventTime(string startTimeStr, string endTimeStr)
     {
         // Arrange
         var startTime = DateTime.Parse(startTimeStr).AddYears(10); // Ensure it's in the future
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         
         // Act
         var result = _event.UpdateTime(eventTime);
@@ -84,7 +86,7 @@ public class EventTimeTests
         _event.SetReadyStatus(_defaultTime);
         var startTime = new DateTime(2050,1,2,12,0,0);
         var endTime = startTime.AddHours(5);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
 
         // Act
         var result = _event.UpdateTime(eventTime);
@@ -109,7 +111,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
         
         // Assert
@@ -131,7 +133,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
     
         // Assert
@@ -152,7 +154,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
     
         // Assert
@@ -172,7 +174,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
     
         // Assert
@@ -192,7 +194,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
         
         // Assert
@@ -212,7 +214,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
         
         // Assert
@@ -226,9 +228,9 @@ public class EventTimeTests
     {
         // Arrange
         _event.SetActiveStatus(_defaultTime);
-        var startTime = DateTime.Now.AddDays(1).Date.AddHours(10);
+        var startTime = _eventTime.GetCurrentTime();
         var endTime = startTime.AddHours(4);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
     
         // Act
         var result = _event.UpdateTime(eventTime);
@@ -245,9 +247,9 @@ public class EventTimeTests
     {
         // Arrange
         _event.SetCancelledStatus();
-        var startTime = DateTime.Now.AddDays(1).Date.AddHours(10);
+        var startTime = _eventTime.GetCurrentTime();
         var endTime = startTime.AddHours(4);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
     
         // Act
         var result = _event.UpdateTime(eventTime);
@@ -267,7 +269,7 @@ public class EventTimeTests
         var endTime = DateTime.Now.AddHours(3);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
     
         // Assert
@@ -287,7 +289,7 @@ public class EventTimeTests
         var endTime = DateTime.Parse(endTimeStr).AddYears(10);
     
         // Act
-        var eventTimeResult = EventTime.Create(startTime, endTime);
+        var eventTimeResult = EventTime.Create(startTime, endTime, _defaultTime);
         var resultFailure = Assert.IsType<Failure<EventTime>>(eventTimeResult);
     
         // Assert

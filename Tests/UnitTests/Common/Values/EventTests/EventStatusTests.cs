@@ -1,4 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
+﻿using UnitTests.Fakes;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
@@ -22,7 +23,7 @@ public class EventStatusTests
         // Set valid time (in the future)
         var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests
@@ -94,7 +95,7 @@ public class EventStatusTests
         // Set everything except title
         var startTime = new DateTime(2050, 1, 2, 12, 0,0);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         var maxGuests = EventMaxGuests.Create(20).Value;
         _event.UpdateMaxGuests(maxGuests);
@@ -147,7 +148,7 @@ public class EventStatusTests
         var stubTime = new StubCurrentTime(new DateTime(2050, 1, 5, 12, 0, 0)); // Jan 5, 2050
         var startTime = new DateTime(2050, 1, 3, 12, 0, 0); // Jan 3, 2050 (before stubTime)
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests
@@ -245,7 +246,7 @@ public class EventStatusTests
         
         var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Act

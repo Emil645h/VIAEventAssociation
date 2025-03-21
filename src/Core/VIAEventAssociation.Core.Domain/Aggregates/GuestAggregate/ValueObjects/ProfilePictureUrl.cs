@@ -2,7 +2,7 @@
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 
-public class ProfilePictureUrl
+public record ProfilePictureUrl
 {
     internal Uri Value { get; }
     

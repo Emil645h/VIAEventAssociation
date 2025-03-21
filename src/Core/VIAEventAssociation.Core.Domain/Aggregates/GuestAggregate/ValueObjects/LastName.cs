@@ -3,7 +3,7 @@ using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 
-public class LastName
+public record LastName
 {
     internal string Value { get; }
     

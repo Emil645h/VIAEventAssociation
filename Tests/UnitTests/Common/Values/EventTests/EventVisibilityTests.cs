@@ -1,4 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
+﻿using UnitTests.Fakes;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
@@ -21,7 +22,7 @@ public class EventVisibilityTests
         // Set valid time (in the future)
         var startTime = new DateTime(2050, 1, 2, 12, 0, 0);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests

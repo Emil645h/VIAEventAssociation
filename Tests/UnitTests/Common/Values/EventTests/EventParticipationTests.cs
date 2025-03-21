@@ -1,4 +1,5 @@
-﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
+﻿using UnitTests.Fakes;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
@@ -47,7 +48,7 @@ public class EventParticipationTests : IDisposable
         // Set valid time (in the future)
         var startTime = _defaultTime.GetCurrentTime().AddDays(1);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests
@@ -82,7 +83,7 @@ public class EventParticipationTests : IDisposable
         // Set valid time (in the future)
         var startTime = _defaultTime.GetCurrentTime().AddDays(1);
         var endTime = startTime.AddHours(3);
-        var eventTime = EventTime.Create(startTime, endTime).Value;
+        var eventTime = EventTime.Create(startTime, endTime, _defaultTime).Value;
         _event.UpdateTime(eventTime);
         
         // Set valid max guests

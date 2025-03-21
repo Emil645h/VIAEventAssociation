@@ -2,11 +2,11 @@
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
-public class EventDescription
+public record EventDescription
 {
     internal string Value { get; }
     
-    internal EventDescription(string input) =>
+    private EventDescription(string input) =>
         Value = input;
 
     public static Result<EventDescription> Create(string eventDescription)

@@ -1,8 +1,11 @@
 ﻿using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList.ValueObjects;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite;
+using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
+using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.Bases;
 using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
@@ -20,12 +23,19 @@ public class Event : AggregateRoot<EventId>
     internal EventMaxGuests maxGuests;
     internal GuestList.GuestList guestList;
     internal LocationId? locationId;
-    
-    private Event(EventId id, EventTitle title, EventDescription description, EventTime eventTime, EventVisibility visibility, EventStatus status, EventMaxGuests maxGuests, GuestList.GuestList guestList, LocationId locationId)
+    internal IList<Invite.Invite> invites;
+    internal IList<Request.Request> requests;
+
+    private Event(EventId id, EventTitle title, EventDescription description, EventTime eventTime,
+        EventVisibility visibility, EventStatus status, EventMaxGuests maxGuests, GuestList.GuestList guestList,
+        LocationId locationId)
         : base(id)
     {
-        (this.title, this.description, this.eventTime, this.visibility, this.status, this.maxGuests, this.guestList, this.locationId)
+        (this.title, this.description, this.eventTime, this.visibility, this.status, this.maxGuests, this.guestList,
+                this.locationId)
             = (title, description, eventTime, visibility, status, maxGuests, guestList, locationId);
+        this.invites = new List<Invite.Invite>();
+        this.requests = new List<Request.Request>();
     }
     
     public static Result<Event> Create(EventId id)
@@ -38,7 +48,7 @@ public class Event : AggregateRoot<EventId>
         var visibility = EventVisibility.Private;
         var guestListId = GuestListId.Create(Guid.NewGuid()).Value;
         var guestList = GuestList.GuestList.Create(guestListId).Value;
-        
+
         return new Event(id, title, description, null, visibility, status, maxGuests, guestList, null);
     }
     
@@ -202,5 +212,84 @@ public class Event : AggregateRoot<EventId>
             return GuestListErrors.Participation.CannotCancelPastEvent;
         
         return guestList.RemoveFromGuestList(guest.Id);
+    }
+
+    public Result<None> CreateGuestInvite(Guest guest)
+    {
+        if (guest == null)
+            return InviteErrors.Invite.GuestIdIsEmpty;
+
+        if (!(status.Equals(EventStatus.Ready) || status.Equals(EventStatus.Active)))
+            return InviteErrors.Invite.EventNotReadyOrActive;
+
+        int currentGuests = GetTotalGuestCount();
+        if (currentGuests >= maxGuests.Value)
+            return InviteErrors.Invite.EventIsFull;
+
+        if (guestList.IsGuestInList(guest.Id))
+            return InviteErrors.Invite.GuestIsAlreadyParticipating;
+        
+        if (IsGuestInvited(guest.Id))
+            return InviteErrors.Invite.GuestIsAlreadyInvited;
+
+        var inviteId = InviteId.Create(Guid.NewGuid()).Value;
+        var invite = Invite.Invite.Create(inviteId, guest.Id).Value;
+
+        invites.Add(invite);
+        return new None();
+    }
+
+    private bool IsGuestInvited(GuestId guestId)
+        => invites.Any(i => i.assignedGuestId.Value == guestId.Value);
+
+    private int GetTotalGuestCount()
+    {
+        int participantCount = guestList.numberOfGuests;
+        int acceptedInvitesCount = invites.Count(i => i.inviteStatus.Equals(InviteStatus.Accepted));
+
+        return participantCount + acceptedInvitesCount;
+    }
+    
+    public Result<None> GuestAcceptsInvite(Guest guest, ICurrentTime currentTime)
+    {
+        if (!status.Equals(EventStatus.Active))
+        {
+            if (status.Equals(EventStatus.Cancelled))
+                return EventErrors.Invitation.EventCancelled;
+            return EventErrors.Invitation.EventNotActive;
+        }
+
+        if (eventTime != null && eventTime.StartTime <= currentTime.GetCurrentTime())
+            return EventErrors.Invitation.EventInPast;
+
+        var invite = invites.FirstOrDefault(i => i.assignedGuestId.Value == guest.Id.Value);
+
+        if (invite == null)
+            return EventErrors.Invitation.InvitationNotFound;
+
+        int currentGuests = GetTotalGuestCount();
+        if (currentGuests >= maxGuests.Value)
+        {
+            if (!invite.inviteStatus.Equals(InviteStatus.Accepted))
+                return EventErrors.Invitation.EventFull;
+        }
+
+        return invite.AcceptInvite();
+    }
+
+    public Result<None> GuestRejectsInvite(Guest guest)
+    {
+        if (status.Equals(EventStatus.Cancelled))
+            return EventErrors.Invitation.EventCancelled;
+
+        if (!status.Equals(EventStatus.Active))
+            return EventErrors.Invitation.EventNotActive;
+
+        var invite = invites.FirstOrDefault(i => i.assignedGuestId.Value == guest.Id.Value);
+
+        if (invite == null)
+            return EventErrors.Invitation.InvitationNotFound;
+
+        return invite.RejectInvite();
     }
 }

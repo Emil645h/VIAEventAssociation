@@ -20,7 +20,7 @@ public class Invite : Entity<InviteId>
     public static Result<Invite> Create(InviteId id, GuestId guestId) 
     {
         if (guestId == null)
-            return InviteErrors.AssignToGuestId.IsEmpty;
+            return InviteErrors.Invite.GuestIdIsEmpty;
 
         var invite = new Invite(id, InviteStatus.Extended, guestId);
         invite.assignedGuestId = guestId;
@@ -28,91 +28,22 @@ public class Invite : Entity<InviteId>
         return invite;
     }
 
-
-    public Result<None> AssignToInvite(GuestId guestId, EventStatus eventStatus, int currentGuestCount, int maxGuestCount, List<GuestId> invitedGuests, GuestList.GuestList guestList)
+    public Result<None> AcceptInvite()
     {
-        if (guestId == null)
-            return InviteErrors.AssignToGuestId.IsEmpty;
-
-        if (eventStatus != EventStatus.Ready && eventStatus != EventStatus.Active)
-            return InviteErrors.AssignToEventId.EventNotActive;
-    
-        if (currentGuestCount >= maxGuestCount)
-            return InviteErrors.AssignToEventId.EventIsFull;
-    
-        if (invitedGuests.Contains(guestId))
-            return InviteErrors.AssignToEventId.GuestIsAlreadyInvited;
-
-        if (guestList.IsGuestParticipating(guestId))
-            return InviteErrors.AssignToEventId.GuestIsAlreadyParticipating;
-
-        if (assignedGuestId != guestId)
-            return InviteErrors.InviteId.Mismatch;
-
-        return new None();
-    }
-    
-    
-
-    public Result<None> AcceptInvite(InviteId inviteId, GuestId guestId, Event evt)
-    {
-        if (inviteId == null)
-            return InviteErrors.InviteId.IsEmpty;
-    
-        if (Id != inviteId)
-            return InviteErrors.InviteId.Mismatch;
-
-        if (!inviteStatus.CanAccept)
-            return InviteErrors.InviteId.CannotAccept;
-        
-        if (assignedGuestId != guestId)
-            return InviteErrors.InviteId.Mismatch;
-        
-        if (evt.guestList.numberOfGuests >= evt.maxGuests.Value)
-            return InviteErrors.AssignToEventId.EventIsFull;
-        
-        if (evt.status != EventStatus.Active)
-            return InviteErrors.AssignToEventId.EventNotActive;
-        
-        if (evt.eventTime.EndTime < DateTime.Now)
-            return InviteErrors.AssignToEventId.EventIsPast;
-        
-    
-        inviteStatus = InviteStatus.Accepted;
-    
-        return new None();
-    }
-
-    public Result<None> AcceptInvitePast(InviteId inviteId, GuestId guestId, Event evt, ICurrentTime currentTime)
-    {
-        if (evt.eventTime.EndTime < currentTime.GetCurrentTime())
-            return InviteErrors.AssignToEventId.EventIsPast;
-
-        inviteStatus = InviteStatus.Accepted;
-        return new None();
-    }
-
-
-    public Result<None> RejectInvite(InviteId inviteId, GuestId guestId, Event evt)
-    {
-        if (Id != inviteId)
-            return InviteErrors.InviteId.IsEmpty;
-        
-        if (assignedGuestId != guestId)
-            return InviteErrors.InviteId.Mismatch;
-        
-        if (!inviteStatus.CanReject && inviteStatus != InviteStatus.Accepted)
-            return InviteErrors.InviteId.CannotReject;
-
-        
-        if (!evt.status.Equals(EventStatus.Active))
-            return InviteErrors.AssignToEventId.EventNotActive;
-
         if (inviteStatus.Equals(InviteStatus.Accepted))
-        {
-            inviteStatus = InviteStatus.Rejected;
-            return new None();
-        }
+            return InviteErrors.AcceptInvite.AlreadyAccepted;
+
+        if (inviteStatus.Equals(InviteStatus.Rejected))
+            return InviteErrors.AcceptInvite.InvitationRejected;
+        
+        inviteStatus = InviteStatus.Accepted;
+        return new None();
+    }
+
+    public Result<None> RejectInvite()
+    {
+        if (inviteStatus.Equals(InviteStatus.Rejected))
+            return InviteErrors.RejectInvite.AlreadyRejected;
         
         inviteStatus = InviteStatus.Rejected;
         return new None();

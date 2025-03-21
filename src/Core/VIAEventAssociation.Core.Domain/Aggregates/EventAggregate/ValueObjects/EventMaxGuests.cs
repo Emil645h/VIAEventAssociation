@@ -2,11 +2,11 @@
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
-public class EventMaxGuests
+public record EventMaxGuests
 {
     internal int Value { get; }
     
-    internal EventMaxGuests(int input) =>
+    private EventMaxGuests(int input) =>
         Value = input;
 
     public static Result<EventMaxGuests> Create(int input)

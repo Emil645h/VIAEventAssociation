@@ -4,7 +4,7 @@ using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 
-public class EventTime
+public record EventTime
 {
     internal DateTime StartTime { get; }
     internal DateTime EndTime { get; }
@@ -12,8 +12,8 @@ public class EventTime
     private EventTime(DateTime startTime, DateTime endTime)
         => (StartTime, EndTime) = (startTime, endTime);
 
-    public static Result<EventTime> Create(DateTime startTime, DateTime endTime)
-        => Validate(startTime, endTime, new ActualCurrentTime());
+    public static Result<EventTime> Create(DateTime startTime, DateTime endTime, ICurrentTime currentTime)
+        => Validate(startTime, endTime, currentTime);
 
     private static Result<EventTime> Validate(DateTime startTime, DateTime endTime, ICurrentTime currentTime)
         => ResultExtensions.AssertAll(

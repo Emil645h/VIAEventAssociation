@@ -2,11 +2,11 @@
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.LocationAggregate.ValueObjects;
 
-public class LocationName
+public record LocationName
 {
     internal string Value { get; }
     
-    internal LocationName(string input) =>
+    private LocationName(string input) =>
         Value = input;
 
     public static Result<LocationName> Create(string input) 
