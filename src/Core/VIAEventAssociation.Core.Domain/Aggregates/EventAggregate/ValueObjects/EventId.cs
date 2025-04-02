@@ -10,4 +10,15 @@ public sealed record EventId
 
     public static Result<EventId> Create(Guid value) 
         => value == Guid.Empty ? EventErrors.EventId.IsEmpty : new EventId(value);
+
+    public static Result<EventId> FromString(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            return EventErrors.EventId.IsEmpty;
+
+        if (!Guid.TryParse(id, out var guidResult))
+            return EventErrors.EventId.IsEmpty;
+        
+        return new EventId(guidResult);
+    }
 };

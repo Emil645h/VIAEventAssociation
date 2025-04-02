@@ -156,4 +156,13 @@ public static class EventErrors
         public static readonly ResultError EventInPast = new(
             InvitationCode, "Past events cannot be joined.");
     }
+
+    public static class Repository
+    {
+        private const string RepositoryCode = "Event.Repository";
+
+        public static readonly ResultError NotFound = new(RepositoryCode, "Event not found with the specified ID.");
+        public static readonly ResultError AlreadyExists = new(RepositoryCode, "An event with this ID already exists.");
+        public static readonly ResultError SaveFailed = new(RepositoryCode, "Failed to save the event.");
+    }
 }

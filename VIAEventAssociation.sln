@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.To
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.Domain", "src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj", "{FD45887C-02B2-4ADF-93D1-4343A5598BAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.Application", "src\Core\VIAEventAssociation.Core.Application\VIAEventAssociation.Core.Application.csproj", "{34DF846C-2A98-4781-B31E-C9B69BAF5367}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{FD45887C-02B2-4ADF-93D1-4343A5598BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD45887C-02B2-4ADF-93D1-4343A5598BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD45887C-02B2-4ADF-93D1-4343A5598BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34DF846C-2A98-4781-B31E-C9B69BAF5367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34DF846C-2A98-4781-B31E-C9B69BAF5367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34DF846C-2A98-4781-B31E-C9B69BAF5367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34DF846C-2A98-4781-B31E-C9B69BAF5367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5C5D0EF8-5CC7-4728-A524-0D47819D65E4} = {3700EDE0-90F9-43C4-8FB9-5F44FC30305A}
@@ -48,5 +54,6 @@ Global
 		{3EA2963B-1A4C-473A-9230-AEB6DEC3BDF1} = {88A491CD-83E8-4729-BE96-846A5F5B7094}
 		{0759AC7D-AF2E-4968-8A65-77B8B27C1E54} = {3EA2963B-1A4C-473A-9230-AEB6DEC3BDF1}
 		{FD45887C-02B2-4ADF-93D1-4343A5598BAF} = {88A491CD-83E8-4729-BE96-846A5F5B7094}
+		{34DF846C-2A98-4781-B31E-C9B69BAF5367} = {88A491CD-83E8-4729-BE96-846A5F5B7094}
 	EndGlobalSection
 EndGlobal
