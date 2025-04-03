@@ -7,14 +7,16 @@ public abstract record Result<T> : Result
     public bool IsSuccess => this is Success<T>;
     public bool IsFailure => this is Failure<T>;
 
-    public T Value => this is Success<T> success ? success.Payload : throw new InvalidOperationException("Cannot access value on failure.");
-    
-    public static implicit operator Result<T>(T value) 
+    public T Value => this is Success<T> success
+        ? success.Payload
+        : throw new InvalidOperationException("Cannot access value on failure.");
+
+    public static implicit operator Result<T>(T value)
         => new Success<T>(value);
 
-    public static implicit operator Result<T>(ResultError error) 
+    public static implicit operator Result<T>(ResultError error)
         => new Failure<T>(new[] { error });
-    
+
     public static Result<T> Combine(IEnumerable<Result<T>> results)
     {
         var errors = new List<ResultError>();
@@ -39,11 +41,12 @@ public abstract record Result<T> : Result
         {
             return new Failure<T>(errors);
         }
+
         if (!anySuccess)
         {
             // Edge case: no success + no errors => decide how to handle
             // Possibly return a Failure with "No success" or fallback value
-            return new Failure<T>(new[] 
+            return new Failure<T>(new[]
             {
                 new ResultError("NO_SUCCESS", "No successful results found.")
             });
@@ -55,8 +58,6 @@ public abstract record Result<T> : Result
     // Overload to combine an arbitrary number of results easily
     public static Result<T> Combine(params Result<T>[] results)
         => Combine((IEnumerable<Result<T>>)results);
-    
-    
 }
 
 public record Success<T>(T Payload) : Result<T>;
@@ -72,11 +73,11 @@ public static class ResultExtensions
     public static Result<T> ToResult<T>(this T value)
     {
         if (value == null)
-            return new Failure<T>(new[]{ new ResultError("NULL","Value is null") });
+            return new Failure<T>(new[] { new ResultError("NULL", "Value is null") });
         return value; // implicit -> new Success<T>(value)
     }
 
-    public static Result<U> Map<T,U>(this Result<T> result, Func<T,U> transform)
+    public static Result<U> Map<T, U>(this Result<T> result, Func<T, U> transform)
     {
         return result switch
         {
@@ -86,22 +87,22 @@ public static class ResultExtensions
         };
     }
 
-    public static Result<T> Where<T>(this Result<T> result, 
-        Func<T,bool> predicate, ResultError errorIfFalse)
+    public static Result<T> Where<T>(this Result<T> result,
+        Func<T, bool> predicate, ResultError errorIfFalse)
     {
         return result switch
         {
             Success<T> s => predicate(s.Value)
                 ? s
-                : new Failure<T>(new[]{ errorIfFalse }),
+                : new Failure<T>(new[] { errorIfFalse }),
             Failure<T> f => f,
             _ => throw new NotSupportedException()
         };
     }
 
-    public static Result<U> Match<T,U>(this Result<T> result,
-        Func<T,U> onSuccess,
-        Func<IEnumerable<ResultError>,U> onFailure)
+    public static Result<U> Match<T, U>(this Result<T> result,
+        Func<T, U> onSuccess,
+        Func<IEnumerable<ResultError>, U> onFailure)
     {
         return result switch
         {
@@ -110,7 +111,7 @@ public static class ResultExtensions
             _ => throw new NotSupportedException()
         };
     }
-    
+
     public static Result<None> AssertAll(params Func<Result<None>>[] validations)
     {
         var errors = new List<ResultError>();
@@ -127,7 +128,7 @@ public static class ResultExtensions
             ? new Success<None>(new None())
             : new Failure<None>(errors);
     }
-    
+
     public static Result<T> WithPayloadIfSuccess<T>(this Result<None> result, Func<T> createPayload)
     {
         return result switch
@@ -136,5 +137,45 @@ public static class ResultExtensions
             Failure<None> f => new Failure<T>(f.Errors),
             _ => throw new NotSupportedException()
         };
+    }
+
+
+    public static Result<None> CombineResultsInto<TOutput>(params Result[] results)
+    {
+        var errors = new List<ResultError>();
+
+        foreach (var result in results)
+        {
+            // This is tricky since we need to extract errors from different types of failures
+            if (result is Failure<object> failureObj)
+            {
+                errors.AddRange(failureObj.Errors);
+            }
+            else if (result is Failure<None> failureNone)
+            {
+                errors.AddRange(failureNone.Errors);
+            }
+            else if (result.GetType().IsGenericType && 
+                     result.GetType().GetGenericTypeDefinition() == typeof(Failure<>))
+            {
+                // Use reflection to extract errors from any Failure<T>
+                var errorsProperty = result.GetType().GetProperty("Errors");
+                if (errorsProperty != null)
+                {
+                    var extractedErrors = errorsProperty.GetValue(result) as IEnumerable<ResultError>;
+                    if (extractedErrors != null)
+                    {
+                        errors.AddRange(extractedErrors);
+                    }
+                }
+            }
+        }
+
+        if (errors.Count > 0)
+        {
+            return new Failure<None>(errors);
+        }
+
+        return new Success<None>(new None());
     }
 }

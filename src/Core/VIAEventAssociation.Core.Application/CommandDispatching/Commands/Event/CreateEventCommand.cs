@@ -13,7 +13,7 @@ public class CreateEventCommand
     {
         var idResult = EventId.FromString(id);
 
-        return Result<None>.Combine(idResult.Map(_ => new None()))
+        return ResultExtensions.CombineResultsInto<CreateEventCommand>(idResult)
             .WithPayloadIfSuccess(() => new CreateEventCommand(idResult.Value));
     }
 }
