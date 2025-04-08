@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="CommandDispatching\Dispatcher\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Tools\VIAEventAssociation.Core.Tools.OperationResult\VIAEventAssociation.Core.Tools.OperationResult.csproj" />
       <ProjectReference Include="..\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
     </ItemGroup>
