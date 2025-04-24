@@ -13,4 +13,14 @@ public class InviteStatus : Enumeration
 
     public bool CanAccept => this == Extended;
     public bool CanReject => this == Extended;
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((InviteStatus) obj);
+    }
+    
+    public override int GetHashCode() => base.GetHashCode();
 }

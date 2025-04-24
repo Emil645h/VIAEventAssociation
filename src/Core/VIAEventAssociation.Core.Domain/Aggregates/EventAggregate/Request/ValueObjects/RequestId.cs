@@ -10,4 +10,8 @@ public sealed record RequestId
     
     public static Result<RequestId> Create(Guid value) =>
     value == Guid.Empty ? RequestErrors.RequestId.IsEmpty : new RequestId(value);
+    
+    public static Result<RequestId> FromGuid(Guid guid) 
+        => guid == Guid.Empty ? RequestErrors.RequestId.IsEmpty : new RequestId(guid);
+
 }

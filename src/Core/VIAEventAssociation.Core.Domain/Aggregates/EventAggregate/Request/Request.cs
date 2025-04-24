@@ -14,6 +14,8 @@ public class Request : Entity<RequestId>
     private Request(RequestId id, RequestStatus requestStatus, string reason) : base(id)
         => (this.requestStatus, this.reason) = (requestStatus, reason);
     
+    private Request() { } // EFC
+    
     public static Result<Request> Create(RequestId id, string reason) 
         => string.IsNullOrWhiteSpace(reason) ? RequestErrors.Reason.IsEmpty : new Request(id, RequestStatus.Pending, reason);
 

@@ -17,6 +17,8 @@ public class Invite : Entity<InviteId>
         (this.inviteStatus, this.assignedGuestId) = (inviteStatus, assignedGuestId);
     }
     
+    private Invite() { } // EFC
+    
     public static Result<Invite> Create(InviteId id, GuestId guestId) 
     {
         if (guestId == null)

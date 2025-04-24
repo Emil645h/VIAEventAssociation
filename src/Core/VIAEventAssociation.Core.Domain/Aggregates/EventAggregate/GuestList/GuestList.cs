@@ -14,6 +14,8 @@ public class GuestList : Entity<GuestListId>
     private GuestList(GuestListId id) : base(id)
         => this.guests = new();
 
+    private GuestList() { } // EFC
+    
     public static Result<GuestList> Create(GuestListId id)
         => new GuestList(id);
 

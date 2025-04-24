@@ -10,4 +10,8 @@ public sealed record GuestListId
     
     public static Result<GuestListId> Create(Guid value) =>
     value == Guid.Empty ? GuestListErrors.GuestListId.IsEmpty : new GuestListId(value);
+    
+    public static Result<GuestListId> FromGuid(Guid guid) 
+        => guid == Guid.Empty ? GuestListErrors.GuestListId.IsEmpty : new GuestListId(guid);
+    
 }

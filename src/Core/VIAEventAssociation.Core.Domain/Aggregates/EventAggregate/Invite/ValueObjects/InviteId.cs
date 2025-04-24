@@ -10,4 +10,8 @@ public class InviteId
     
     public static Result<InviteId> Create(Guid value) =>
         value == Guid.Empty ? InviteErrors.InviteId.IsEmpty : new InviteId(value);
+    
+    public static Result<InviteId> FromGuid(Guid guid) 
+        => guid == Guid.Empty ? InviteErrors.InviteId.IsEmpty : new InviteId(guid);
+
 }

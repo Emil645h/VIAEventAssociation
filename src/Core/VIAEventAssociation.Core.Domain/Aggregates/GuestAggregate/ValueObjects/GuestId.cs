@@ -21,4 +21,7 @@ public sealed record GuestId
         
         return new GuestId(guidResult);
     }
+    
+    public static Result<GuestId> FromGuid(Guid guid) 
+        => guid == Guid.Empty ? GuestErrors.GuestId.IsEmpty : new GuestId(guid);
 }

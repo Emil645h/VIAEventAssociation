@@ -14,6 +14,8 @@ public class Guest : AggregateRoot<GuestId>
     private Guest(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) : base(id) 
         => (this.firstName, this.lastName, this.email, this.profilePictureUrl) = (firstName, lastName, email, profilePictureUrl);
     
+    private Guest() { } // EFC
+    
     public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) 
         => new Guest(id, firstName, lastName, email, profilePictureUrl);
     

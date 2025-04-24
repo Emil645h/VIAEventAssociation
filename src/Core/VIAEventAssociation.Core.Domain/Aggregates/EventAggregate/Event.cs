@@ -26,6 +26,8 @@ public class Event : AggregateRoot<EventId>
     internal IList<Invite.Invite> invites;
     internal IList<Request.Request> requests;
 
+    private Event() {} // EFC
+    
     private Event(EventId id, EventTitle title, EventDescription description, EventTime eventTime,
         EventVisibility visibility, EventStatus status, EventMaxGuests maxGuests, GuestList.GuestList guestList,
         LocationId locationId)

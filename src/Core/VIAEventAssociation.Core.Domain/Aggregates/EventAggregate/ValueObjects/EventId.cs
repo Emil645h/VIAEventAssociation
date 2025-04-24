@@ -21,4 +21,8 @@ public sealed record EventId
         
         return new EventId(guidResult);
     }
-};
+    
+    public static Result<EventId> FromGuid(Guid guid) 
+        => guid == Guid.Empty ? EventErrors.EventId.IsEmpty : new EventId(guid);
+
+}
