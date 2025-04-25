@@ -19,7 +19,8 @@ public class InviteStatus : Enumeration
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != this.GetType()) return false;
-        return Equals((InviteStatus) obj);
+        var other = (InviteStatus)obj;
+        return Value == other.Value && DisplayName == other.DisplayName;
     }
     
     public override int GetHashCode() => base.GetHashCode();

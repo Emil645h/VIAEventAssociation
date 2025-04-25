@@ -13,4 +13,15 @@ public class RequestStatus : Enumeration
 
     public bool CanAccept => this == Pending;
     public bool CanReject => this == Pending;
+    
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        var other = (RequestStatus)obj;
+        return Value == other.Value && DisplayName == other.DisplayName;
+    }
+    
+    public override int GetHashCode() => base.GetHashCode();
 }
