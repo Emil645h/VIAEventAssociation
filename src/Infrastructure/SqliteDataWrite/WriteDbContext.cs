@@ -3,7 +3,7 @@ using SqliteDataWrite.Configurations;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
 
-namespace SqliteDataWrite.WriteDbContext;
+namespace SqliteDataWrite;
 
 public class WriteDbContext(DbContextOptions options) : DbContext(options)
 {

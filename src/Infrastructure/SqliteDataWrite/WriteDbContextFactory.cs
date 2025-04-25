@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace SqliteDataWrite.WriteDbContext;
+namespace SqliteDataWrite;
 
 public class WriteDbContextFactory : IDesignTimeDbContextFactory<WriteDbContext>
 {
