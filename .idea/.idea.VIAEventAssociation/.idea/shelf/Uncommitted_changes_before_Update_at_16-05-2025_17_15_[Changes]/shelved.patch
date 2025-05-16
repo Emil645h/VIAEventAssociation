@@ -1,0 +1,306 @@
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/LastName.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Text.RegularExpressions;\r\nusing VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\n\r\npublic record LastName\r\n{\r\n    internal string Value { get; }\r\n    \r\n    private LastName(string input) => Value = FormatName(input);\r\n    \r\n    public static Result<LastName> Create(string lastName) => \r\n        string.IsNullOrWhiteSpace(lastName)\r\n            ? GuestErrors.LastName.LastNameIsEmpty : Validate(lastName);\r\n    \r\n    private static Result<LastName> Validate(string lastName) =>\r\n        ResultExtensions.AssertAll(\r\n            () => MustHaveValidLength(lastName),\r\n            () => MustContainOnlyLetters(lastName)\r\n        ).WithPayloadIfSuccess(() => new LastName(lastName));\r\n\r\n    private static Result<None> MustHaveValidLength(string firstName)\r\n    {\r\n        if (firstName.Length < 2 || firstName.Length > 25)\r\n            return GuestErrors.LastName.InvalidLength;\r\n\r\n        return new None();\r\n    }\r\n    \r\n    private static Result<None> MustContainOnlyLetters(string firstName)\r\n    {\r\n        Regex regex = new(@\"^[a-zA-Z]+$\");\r\n        Match match = regex.Match(firstName);\r\n        if (!match.Success)\r\n            return GuestErrors.LastName.InvalidCharacters;\r\n\r\n        return new None();\r\n    }\r\n\r\n    private static string FormatName(string name)\r\n    {\r\n        if (string.IsNullOrWhiteSpace(name))\r\n            return name;\r\n\r\n        return char.ToUpper(name[0]) + name.Substring(1).ToLower();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/LastName.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/LastName.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/LastName.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/LastName.cs	(date 1743671882664)
+@@ -44,4 +44,12 @@
+ 
+         return char.ToUpper(name[0]) + name.Substring(1).ToLower();
+     }
++    
++    public static Result<LastName> FromString(string lastName)
++    {
++        if (string.IsNullOrWhiteSpace(lastName))
++            return GuestErrors.LastName.LastNameIsEmpty;
++
++        return Validate(lastName);
++    }
+ }
+\ No newline at end of file
+Index: src/Core/VIAEventAssociation.Core.Application/VIAEventAssociation.Core.Application.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n    <PropertyGroup>\r\n        <TargetFramework>net8.0</TargetFramework>\r\n        <ImplicitUsings>enable</ImplicitUsings>\r\n        <Nullable>enable</Nullable>\r\n    </PropertyGroup>\r\n\r\n    <ItemGroup>\r\n      <Folder Include=\"CommandDispatching\\Commands\\Guest\\\" />\r\n      <Folder Include=\"CommandDispatching\\Dispatcher\\\" />\r\n      <Folder Include=\"Features\\Guest\\\" />\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n      <ProjectReference Include=\"..\\Tools\\VIAEventAssociation.Core.Tools.OperationResult\\VIAEventAssociation.Core.Tools.OperationResult.csproj\" />\r\n      <ProjectReference Include=\"..\\VIAEventAssociation.Core.Domain\\VIAEventAssociation.Core.Domain.csproj\" />\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n        <AssemblyAttribute Include=\"System.Runtime.CompilerServices.InternalsVisibleTo\">\r\n            <_Parameter1>UnitTests</_Parameter1>\r\n        </AssemblyAttribute>\r\n    </ItemGroup>\r\n\r\n</Project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Application/VIAEventAssociation.Core.Application.csproj b/src/Core/VIAEventAssociation.Core.Application/VIAEventAssociation.Core.Application.csproj
+--- a/src/Core/VIAEventAssociation.Core.Application/VIAEventAssociation.Core.Application.csproj	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Application/VIAEventAssociation.Core.Application.csproj	(date 1743687592768)
+@@ -7,9 +7,7 @@
+     </PropertyGroup>
+ 
+     <ItemGroup>
+-      <Folder Include="CommandDispatching\Commands\Guest\" />
+       <Folder Include="CommandDispatching\Dispatcher\" />
+-      <Folder Include="Features\Guest\" />
+     </ItemGroup>
+ 
+     <ItemGroup>
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ViaEmail.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Text.RegularExpressions;\r\nusing VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\n\r\npublic record ViaEmail\r\n{\r\n    internal string Value { get; }\r\n    \r\n    private ViaEmail(string input) => Value = input.ToLower();\r\n\r\n    public static Result<ViaEmail> Create(string email) =>\r\n        email == null\r\n            ? GuestErrors.ViaEmail.EmailIsEmpty\r\n            : Validate(email);\r\n\r\n    private static Result<ViaEmail> Validate(string email) =>\r\n        ResultExtensions.AssertAll(\r\n            () => MustNotBeNullOrEmpty(email),\r\n            () => MustBeViaEmail(email),\r\n            () => MustBeValidEmailStructure(email),\r\n            () => MustHaveValidUsername(email)\r\n        ).WithPayloadIfSuccess(() => new ViaEmail(email));\r\n    \r\n    private static Result<None> MustNotBeNullOrEmpty(string email)\r\n    {\r\n        if (string.IsNullOrWhiteSpace(email))\r\n            return GuestErrors.ViaEmail.EmailIsEmpty;\r\n        \r\n        return new None();\r\n    }\r\n\r\n    private static Result<None> MustBeViaEmail(string email)\r\n    {\r\n        if (!email.Contains(\"@via.dk\", StringComparison.OrdinalIgnoreCase))\r\n            return GuestErrors.ViaEmail.MustViaEmail;\r\n\r\n        return new None();\r\n    }\r\n\r\n    private static Result<None> MustBeValidEmailStructure(string email)\r\n    {\r\n        Regex regex = new(@\"^([^\\s@]+)@([^\\s@]+)\\.([^\\s@]+)$\");\r\n        Match match = regex.Match(email);\r\n        if (!match.Success)\r\n            return GuestErrors.ViaEmail.InvalidEmailStructure;\r\n\r\n        return new None();\r\n    }\r\n\r\n    private static Result<None> MustHaveValidUsername(string email)\r\n    {\r\n        string username = email.Split('@')[0];\r\n        \r\n        // Username must be either:\r\n        // - 3 or 4 letters (a-z, A-Z)\r\n        // - 6 digits (0-9)\r\n        bool isValid = (username.Length == 3 || username.Length == 4) && Regex.IsMatch(username, @\"^[a-zA-Z]+$\") ||\r\n                       username.Length == 6 && Regex.IsMatch(username, @\"^[0-9]+$\");\r\n\r\n        if (!isValid)\r\n            return GuestErrors.ViaEmail.InvalidUsernameFormat;\r\n        \r\n        return new None();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ViaEmail.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ViaEmail.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ViaEmail.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ViaEmail.cs	(date 1743671882673)
+@@ -63,4 +63,12 @@
+         
+         return new None();
+     }
++    
++    public static Result<ViaEmail> FromString(string email)
++    {
++        if (string.IsNullOrWhiteSpace(email))
++            return GuestErrors.ViaEmail.EmailIsEmpty;
++
++        return Validate(email);
++    }
+ }
+\ No newline at end of file
+Index: Tests/UnitTests/UnitTests.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n    <PropertyGroup>\r\n        <TargetFramework>net8.0</TargetFramework>\r\n        <ImplicitUsings>enable</ImplicitUsings>\r\n        <Nullable>enable</Nullable>\r\n\r\n        <IsPackable>false</IsPackable>\r\n        <IsTestProject>true</IsTestProject>\r\n    </PropertyGroup>\r\n\r\n    <ItemGroup>\r\n        <PackageReference Include=\"coverlet.collector\" Version=\"6.0.0\"/>\r\n        <PackageReference Include=\"Microsoft.NET.Test.Sdk\" Version=\"17.8.0\"/>\r\n        <PackageReference Include=\"Moq\" Version=\"4.20.72\" />\r\n        <PackageReference Include=\"xunit\" Version=\"2.5.3\"/>\r\n        <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.5.3\"/>\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n        <Using Include=\"Xunit\"/>\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n      <ProjectReference Include=\"..\\..\\src\\Core\\Tools\\VIAEventAssociation.Core.Tools.OperationResult\\VIAEventAssociation.Core.Tools.OperationResult.csproj\" />\r\n      <ProjectReference Include=\"..\\..\\src\\Core\\VIAEventAssociation.Core.Application\\VIAEventAssociation.Core.Application.csproj\" />\r\n      <ProjectReference Include=\"..\\..\\src\\Core\\VIAEventAssociation.Core.Domain\\VIAEventAssociation.Core.Domain.csproj\" />\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n      <Folder Include=\"Features\\Guest\\\" />\r\n    </ItemGroup>\r\n\r\n</Project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Tests/UnitTests/UnitTests.csproj b/Tests/UnitTests/UnitTests.csproj
+--- a/Tests/UnitTests/UnitTests.csproj	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/Tests/UnitTests/UnitTests.csproj	(date 1743686256808)
+@@ -27,8 +27,4 @@
+       <ProjectReference Include="..\..\src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
+     </ItemGroup>
+ 
+-    <ItemGroup>
+-      <Folder Include="Features\Guest\" />
+-    </ItemGroup>
+-
+ </Project>
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/EventAggregate/ValueObjects/EventId.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;\r\n\r\npublic sealed record EventId\r\n{\r\n    public Guid Value { get; }\r\n    \r\n    private EventId(Guid value) => Value = value;\r\n\r\n    public static Result<EventId> Create(Guid value) \r\n        => value == Guid.Empty ? EventErrors.EventId.IsEmpty : new EventId(value);\r\n\r\n    public static Result<EventId> FromString(string id)\r\n    {\r\n        if (string.IsNullOrWhiteSpace(id))\r\n            return EventErrors.EventId.IsEmpty;\r\n\r\n        if (!Guid.TryParse(id, out var guidResult))\r\n            return EventErrors.EventId.IsEmpty;\r\n        \r\n        return new EventId(guidResult);\r\n    }\r\n};
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/EventAggregate/ValueObjects/EventId.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/EventAggregate/ValueObjects/EventId.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/EventAggregate/ValueObjects/EventId.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/EventAggregate/ValueObjects/EventId.cs	(date 1743676004063)
+@@ -21,4 +21,6 @@
+         
+         return new EventId(guidResult);
+     }
++    
++    public override string ToString() => Value.ToString();
+ };
+\ No newline at end of file
+Index: Tests/UnitTests/Fakes/Repositories/FakeEventRepository.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Runtime.InteropServices.JavaScript;\r\nusing VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;\r\nusing VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;\r\nusing VIAEventAssociation.Core.Domain.Contracts;\r\nusing VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace UnitTests.Fakes.Repositories;\r\n\r\npublic class FakeEventRepository : IEventRepository\r\n{\r\n    private readonly Dictionary<Guid, Event> _events = new();\r\n\r\n    public Task<Result<None>> AddAsync(Event @event)\r\n    {\r\n        _events[@event.Id.Value] = @event;\r\n        return Task.FromResult<Result<None>>(new None());\r\n    }\r\n\r\n    public Task<Result<Event>> GetByIdAsync(EventId id)\r\n    {\r\n        if (_events.TryGetValue(id.Value, out var @event))\r\n        {\r\n            return Task.FromResult<Result<Event>>(@event);\r\n        }\r\n\r\n        return Task.FromResult<Result<Event>>(EventErrors.Repository.NotFound);\r\n    }\r\n\r\n    public Task<Result<None>> RemoveAsync(EventId id)\r\n    {\r\n        _events.Remove(id.Value);\r\n        return Task.FromResult<Result<None>>(new None());\r\n    }\r\n\r\n    public Task<Result<None>> UpdateAsync(Event @event)\r\n    {\r\n        _events[@event.Id.Value] = @event;\r\n        return Task.FromResult<Result<None>>(new None());\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Tests/UnitTests/Fakes/Repositories/FakeEventRepository.cs b/Tests/UnitTests/Fakes/Repositories/FakeEventRepository.cs
+--- a/Tests/UnitTests/Fakes/Repositories/FakeEventRepository.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/Tests/UnitTests/Fakes/Repositories/FakeEventRepository.cs	(date 1743677654222)
+@@ -1,5 +1,6 @@
+ using System.Runtime.InteropServices.JavaScript;
+ using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
++using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.GuestList;
+ using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
+ using VIAEventAssociation.Core.Domain.Contracts;
+ using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
+@@ -37,4 +38,14 @@
+         _events[@event.Id.Value] = @event;
+         return Task.FromResult<Result<None>>(new None());
+     }
++
++    public Task<Result<GuestList>> GetGuestListAsync(EventId id)
++    {
++        if (_events.TryGetValue(id.Value, out var @event))
++        {
++            return Task.FromResult<Result<GuestList>>(@event.guestList);
++        }
++
++        return Task.FromResult<Result<GuestList>>(EventErrors.Repository.NotFound);
++    }
+ }
+\ No newline at end of file
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ProfilePictureUrl.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\n\r\npublic record ProfilePictureUrl\r\n{\r\n    internal Uri Value { get; }\r\n    \r\n    private ProfilePictureUrl(Uri url) => Value = url;\r\n\r\n    public static Result<ProfilePictureUrl> Create(string url)\r\n        => string.IsNullOrWhiteSpace(url) ? GuestErrors.ProfilePictureUrl.UrlIsEmpty : Validate(url);\r\n\r\n    private static Result<ProfilePictureUrl> Validate(string url)\r\n        => ResultExtensions.AssertAll(\r\n            () => MustBeValidUrlFormat(url)\r\n        ).WithPayloadIfSuccess(() => new ProfilePictureUrl(new Uri(url)));\r\n\r\n    private static Result<None> MustBeValidUrlFormat(string url)\r\n    {\r\n        bool isValid = Uri.TryCreate(url, UriKind.Absolute, out Uri uri) && \r\n                       (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);\r\n                       \r\n        if (!isValid)\r\n        {\r\n            return GuestErrors.ProfilePictureUrl.InvalidUrlFormat;\r\n        }\r\n        \r\n        return new None();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ProfilePictureUrl.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ProfilePictureUrl.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ProfilePictureUrl.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/ProfilePictureUrl.cs	(date 1743671882669)
+@@ -28,4 +28,12 @@
+         
+         return new None();
+     }
++    
++    public static Result<ProfilePictureUrl> FromString(string url)
++    {
++        if (string.IsNullOrWhiteSpace(url))
++            return GuestErrors.ProfilePictureUrl.UrlIsEmpty;
++
++        return Validate(url);
++    }
+ }
+\ No newline at end of file
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/Guest.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\nusing VIAEventAssociation.Core.Domain.Common.Bases;\r\nusing VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;\r\n\r\npublic class Guest : AggregateRoot<GuestId>\r\n{\r\n    internal FirstName firstName;\r\n    internal LastName lastName;\r\n    internal ViaEmail email;\r\n    internal ProfilePictureUrl profilePictureUrl;\r\n    \r\n    private Guest(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) : base(id) \r\n        => (this.firstName, this.lastName, this.email, this.profilePictureUrl) = (firstName, lastName, email, profilePictureUrl);\r\n    \r\n    public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) \r\n        => new Guest(id, firstName, lastName, email, profilePictureUrl);\r\n    \r\n    public Result<None> UpdateViaEmail(ViaEmail viaEmail)\r\n    {\r\n        if (viaEmail == null)\r\n            return GuestErrors.ViaEmail.EmailIsEmpty;\r\n        \r\n        email = viaEmail;\r\n        return new None();\r\n    }\r\n\r\n    public Result<None> UpdateFirstName(FirstName newName)\r\n    {\r\n        if (newName == null)\r\n            return GuestErrors.FirstName.FirstNameIsEmpty;\r\n        \r\n        firstName = newName;\r\n        return new None();\r\n    }\r\n    public Result<None> UpdateLastName(LastName newName)\r\n    {\r\n        if (newName == null)\r\n            return GuestErrors.LastName.LastNameIsEmpty;\r\n        \r\n        lastName = newName;\r\n        return new None();\r\n    }\r\n\r\n    public Result<None> UpdateProfilePictureUrl(ProfilePictureUrl newUrl)\r\n    {\r\n        if (newUrl == null)\r\n            return GuestErrors.ProfilePictureUrl.UrlIsEmpty;\r\n        \r\n        profilePictureUrl = newUrl;\r\n        return new None();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/Guest.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/Guest.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/Guest.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/Guest.cs	(date 1743672721356)
+@@ -13,9 +13,28 @@
+     
+     private Guest(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) : base(id) 
+         => (this.firstName, this.lastName, this.email, this.profilePictureUrl) = (firstName, lastName, email, profilePictureUrl);
+-    
+-    public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email, ProfilePictureUrl profilePictureUrl) 
+-        => new Guest(id, firstName, lastName, email, profilePictureUrl);
++
++    public static Result<Guest> Create(GuestId id, FirstName firstName, LastName lastName, ViaEmail email,
++        ProfilePictureUrl profilePictureUrl)
++    {
++        if (id == null)
++            return GuestErrors.GuestId.IsEmpty;
++        
++        if (firstName == null)
++            return GuestErrors.FirstName.FirstNameIsEmpty;
++        
++        if (lastName == null)
++            return GuestErrors.LastName.LastNameIsEmpty;
++        
++        if (email == null)
++            return GuestErrors.ViaEmail.EmailIsEmpty;
++        
++        if (profilePictureUrl == null)
++            return GuestErrors.ProfilePictureUrl.UrlIsEmpty;
++
++        return new Guest(id, firstName, lastName, email, profilePictureUrl);
++    }
++
+     
+     public Result<None> UpdateViaEmail(ViaEmail viaEmail)
+     {
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/GuestErrors.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;\r\n\r\npublic static class GuestErrors\r\n{\r\n    public static class GuestId\r\n    {\r\n        private const string GuestIdCode = \"Guest.Id\";\r\n\r\n        public static readonly ResultError IsEmpty = new(GuestIdCode, \"Guest Id cannot be empty.\");\r\n    }\r\n    \r\n    public static class ViaEmail\r\n    {\r\n        private const string EmailCode = \"Guest.ViaEmail\";\r\n\r\n        public static readonly ResultError EmailIsEmpty = new(EmailCode, \"Email cannot be empty.\");\r\n        public static readonly ResultError MustViaEmail = new(EmailCode, \"Email must be a valid Via Email.\");\r\n        public static readonly ResultError InvalidEmailStructure = new(EmailCode, \"Email must be in the format <text1>@<text2>.<text3>.\");\r\n        public static readonly ResultError InvalidUsernameFormat = new(EmailCode, \"Email username must be either 3-4 letters or 6 digits.\");\r\n        public static readonly ResultError EmailAlreadyRegistered = new(EmailCode, \"This email is already registered.\");\r\n    }\r\n\r\n    public static class FirstName\r\n    {\r\n        private const string FirstNameCode = \"Guest.FirstName\";\r\n        \r\n        public static readonly ResultError FirstNameIsEmpty = new(FirstNameCode, \"First Name cannot be empty.\");\r\n        public static readonly ResultError InvalidCharacters = new(FirstNameCode, \"First name can only contain letters (a-z).\");\r\n        public static readonly ResultError InvalidLength = new(FirstNameCode, \"First name must be between 2 and 25 characters long.\");\r\n    }\r\n\r\n    public static class LastName\r\n    {\r\n        private const string LastNameCode = \"Guest.LastName\";\r\n        \r\n        public static readonly ResultError LastNameIsEmpty = new(LastNameCode, \"Last Name cannot be empty.\");\r\n        public static readonly ResultError InvalidCharacters = new(LastNameCode, \"Last name can only contain letters (a-z).\");\r\n        public static readonly ResultError InvalidLength = new(LastNameCode, \"Last name must be between 2 and 25 characters long.\");\r\n    }\r\n    \r\n    public static class ProfilePictureUrl\r\n    {\r\n        private const string ProfilePictureUrlCode = \"Guest.ProfilePictureUrl\";\r\n        \r\n        public static readonly ResultError UrlIsEmpty = new(ProfilePictureUrlCode, \"Profile picture URL cannot be empty.\");\r\n        public static readonly ResultError InvalidUrlFormat = new(ProfilePictureUrlCode, \"Profile picture URL has an invalid format.\");\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/GuestErrors.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/GuestErrors.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/GuestErrors.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/GuestErrors.cs	(date 1743676753416)
+@@ -47,4 +47,12 @@
+         public static readonly ResultError UrlIsEmpty = new(ProfilePictureUrlCode, "Profile picture URL cannot be empty.");
+         public static readonly ResultError InvalidUrlFormat = new(ProfilePictureUrlCode, "Profile picture URL has an invalid format.");
+     }
++
++    public static class Repository
++    {
++        private const string RepositoryCode = "Guest.Repository";
++        
++        public static readonly ResultError NotFound = new(RepositoryCode, "Guest not found.");
++        public static readonly ResultError AlreadyExists = new(RepositoryCode, "Guest already exists.");
++    }
+ }
+\ No newline at end of file
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/FirstName.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Text.RegularExpressions;\r\nusing VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\n\r\npublic record FirstName\r\n{\r\n    internal string Value { get; }\r\n    \r\n    private FirstName(string input) => Value = FormatName(input);\r\n    \r\n    public static Result<FirstName> Create(string firstName) => \r\n    string.IsNullOrWhiteSpace(firstName)\r\n        ? GuestErrors.FirstName.FirstNameIsEmpty : Validate(firstName);\r\n    \r\n    private static Result<FirstName> Validate(string firstName) =>\r\n    ResultExtensions.AssertAll(\r\n        () => MustHaveValidLength(firstName),\r\n        () => MustContainOnlyLetters(firstName)\r\n        ).WithPayloadIfSuccess(() => new FirstName(firstName));\r\n\r\n    private static Result<None> MustHaveValidLength(string firstName)\r\n    {\r\n        if (firstName.Length < 2 || firstName.Length > 25)\r\n            return GuestErrors.FirstName.InvalidLength;\r\n\r\n        return new None();\r\n    }\r\n    \r\n    private static Result<None> MustContainOnlyLetters(string firstName)\r\n    {\r\n        Regex regex = new(@\"^[a-zA-Z]+$\");\r\n        Match match = regex.Match(firstName);\r\n        if (!match.Success)\r\n            return GuestErrors.FirstName.InvalidCharacters;\r\n\r\n        return new None();\r\n    }\r\n\r\n    private static string FormatName(string name)\r\n    {\r\n        if (string.IsNullOrWhiteSpace(name))\r\n            return name;\r\n\r\n        return char.ToUpper(name[0]) + name.Substring(1).ToLower();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/FirstName.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/FirstName.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/FirstName.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/FirstName.cs	(date 1743671882634)
+@@ -44,4 +44,12 @@
+ 
+         return char.ToUpper(name[0]) + name.Substring(1).ToLower();
+     }
++    
++    public static Result<FirstName> FromString(string firstName)
++    {
++        if (string.IsNullOrWhiteSpace(firstName))
++            return GuestErrors.FirstName.FirstNameIsEmpty;
++
++        return Validate(firstName);
++    }
+ }
+\ No newline at end of file
+Index: src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/GuestId.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\nnamespace VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;\r\n\r\npublic sealed record GuestId\r\n{\r\n    public Guid Value { get; }\r\n\r\n    private GuestId(Guid value) => Value = value;\r\n\r\n    public static Result<GuestId> Create(Guid value) =>\r\n        value == Guid.Empty ? GuestErrors.GuestId.IsEmpty : new GuestId(value);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/GuestId.cs b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/GuestId.cs
+--- a/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/GuestId.cs	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/src/Core/VIAEventAssociation.Core.Domain/Aggregates/GuestAggregate/ValueObjects/GuestId.cs	(date 1743676004059)
+@@ -10,4 +10,17 @@
+ 
+     public static Result<GuestId> Create(Guid value) =>
+         value == Guid.Empty ? GuestErrors.GuestId.IsEmpty : new GuestId(value);
++
++    public static Result<GuestId> FromString(string id)
++    {
++        if (string.IsNullOrWhiteSpace(id))
++            return GuestErrors.GuestId.IsEmpty;
++
++        if (!Guid.TryParse(id, out var guidResult))
++            return GuestErrors.GuestId.IsEmpty;
++
++        return new GuestId(guidResult);
++    }
++
++    public override string ToString() => Value.ToString();
+ }
+\ No newline at end of file
+Index: VIAEventAssociation.sln.DotSettings.user
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><wpf:ResourceDictionary xml:space=\"preserve\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:s=\"clr-namespace:System;assembly=mscorlib\" xmlns:ss=\"urn:shemas-jetbrains-com:settings-storage-xaml\" xmlns:wpf=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">\r\n\t<s:String x:Key=\"/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue\">C:\\Program Files\\dotnet\\sdk\\8.0.406\\MSBuild.dll</s:String>\r\n\t<s:String x:Key=\"/Default/Environment/Hierarchy/Build/BuildTool/DotNetCliExePath/@EntryValue\">C:\\Program Files\\dotnet\\dotnet.exe</s:String>\r\n\t<s:Int64 x:Key=\"/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue\">1114112</s:Int64>\r\n\t<s:String x:Key=\"/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2f94fa74_002Dca05_002D4136_002Daede_002D9da4a80dfc9b/@EntryIndexedValue\">&lt;SessionState ContinuousTestingMode=\"0\" Name=\"DeclineInviteTests_WithValidEventAndGuest_ReturnsSuccess\" xmlns=\"urn:schemas-jetbrains-com:jetbrains-ut-session\"&gt;&#xD;\r\n  &lt;TestAncestor&gt;&#xD;\r\n    &lt;TestId&gt;xUnit::F0D98F33-47D1-4A2C-A5EE-F395AB5A8867::net8.0::UnitTests.Common.Values.EventTests.InviteTests.DeclineInviteTests.DeclineInviteTests_WithValidEventAndGuest_ReturnsSuccess&lt;/TestId&gt;&#xD;\r\n  &lt;/TestAncestor&gt;&#xD;\r\n&lt;/SessionState&gt;</s:String>\r\n\t<s:String x:Key=\"/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4b0f16ed_002D6fa9_002D4d26_002D82d6_002D8e63d3950bce/@EntryIndexedValue\">&lt;SessionState ContinuousTestingMode=\"0\" IsActive=\"True\" Name=\"OperationResultUnitTests\" xmlns=\"urn:schemas-jetbrains-com:jetbrains-ut-session\"&gt;&#xD;\r\n  &lt;Project Location=\"D:\\VIAEventAssociation\\Tests\\UnitTests\" Presentation=\"&amp;lt;Tests&amp;gt;\\&amp;lt;UnitTests&amp;gt;\" /&gt;&#xD;\r\n&lt;/SessionState&gt;</s:String>\r\n\t</wpf:ResourceDictionary>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/VIAEventAssociation.sln.DotSettings.user b/VIAEventAssociation.sln.DotSettings.user
+--- a/VIAEventAssociation.sln.DotSettings.user	(revision 2f694f247b34fba6e15c481c5a7d5acc7ca0faf2)
++++ b/VIAEventAssociation.sln.DotSettings.user	(date 1743676887345)
+@@ -1,12 +1,9 @@
+ <wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
++	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATypeAsserts_002Ecs_002Fl_003AC_0021_003FUsers_003Fluuni_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fa5af9ff347cd3ad4acb6dba62122614d3ccb11748643ebcd64727da64c98c7e2_003FTypeAsserts_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+ 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">C:\Program Files\dotnet\sdk\8.0.406\MSBuild.dll</s:String>
+ 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/DotNetCliExePath/@EntryValue">C:\Program Files\dotnet\dotnet.exe</s:String>
+ 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">1114112</s:Int64>
+-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2f94fa74_002Dca05_002D4136_002Daede_002D9da4a80dfc9b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DeclineInviteTests_WithValidEventAndGuest_ReturnsSuccess" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+-  &lt;TestAncestor&gt;&#xD;
+-    &lt;TestId&gt;xUnit::F0D98F33-47D1-4A2C-A5EE-F395AB5A8867::net8.0::UnitTests.Common.Values.EventTests.InviteTests.DeclineInviteTests.DeclineInviteTests_WithValidEventAndGuest_ReturnsSuccess&lt;/TestId&gt;&#xD;
+-  &lt;/TestAncestor&gt;&#xD;
+-&lt;/SessionState&gt;</s:String>
++	
+ 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4b0f16ed_002D6fa9_002D4d26_002D82d6_002D8e63d3950bce/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="OperationResultUnitTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+   &lt;Project Location="D:\VIAEventAssociation\Tests\UnitTests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;UnitTests&amp;gt;" /&gt;&#xD;
+ &lt;/SessionState&gt;</s:String>

@@ -1,0 +1,87 @@
+Index: src/Core/VIAEventAssociation.Core.Domain/VIAEventAssociation.Core.Domain.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n    <PropertyGroup>\r\n        <TargetFramework>net8.0</TargetFramework>\r\n        <ImplicitUsings>enable</ImplicitUsings>\r\n        <Nullable>enable</Nullable>\r\n    </PropertyGroup>\r\n\r\n</Project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/VIAEventAssociation.Core.Domain/VIAEventAssociation.Core.Domain.csproj b/src/Core/VIAEventAssociation.Core.Domain/VIAEventAssociation.Core.Domain.csproj
+--- a/src/Core/VIAEventAssociation.Core.Domain/VIAEventAssociation.Core.Domain.csproj	(revision 50f968e790e82a070e96e248a9f34d46ae452fec)
++++ b/src/Core/VIAEventAssociation.Core.Domain/VIAEventAssociation.Core.Domain.csproj	(date 1741256599591)
+@@ -6,4 +6,11 @@
+         <Nullable>enable</Nullable>
+     </PropertyGroup>
+ 
++    <ItemGroup>
++      <ProjectReference Include="..\Tools\VIAEventAssociation.Core.Tools.OperationResult\VIAEventAssociation.Core.Tools.OperationResult.csproj" />
++        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
++            <_Parameter1>UnitTests</_Parameter1>
++        </AssemblyAttribute>
++    </ItemGroup>
++
+ </Project>
+Index: src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>namespace VIAEventAssociation.Core.Tools.OperationResult.OperationResult;\r\n\r\npublic abstract record Result;\r\n\r\npublic abstract record Result<T> : Result\r\n{\r\n    public static implicit operator Result<T>(T value) \r\n        => new Success<T>(value);\r\n\r\n    public static implicit operator Result<T>(ResultError error) \r\n        => new Failure<T>(new[] { error });\r\n    \r\n    public static Result<T> Combine(IEnumerable<Result<T>> results)\r\n    {\r\n        var errors = new List<ResultError>();\r\n        T? lastValue = default;\r\n        bool anySuccess = false;\r\n\r\n        foreach (var r in results)\r\n        {\r\n            switch (r)\r\n            {\r\n                case Success<T> s:\r\n                    lastValue = s.Value;\r\n                    anySuccess = true;\r\n                    break;\r\n                case Failure<T> f:\r\n                    errors.AddRange(f.Errors);\r\n                    break;\r\n            }\r\n        }\r\n\r\n        if (errors.Count > 0)\r\n        {\r\n            return new Failure<T>(errors);\r\n        }\r\n        if (!anySuccess)\r\n        {\r\n            // Edge case: no success + no errors => decide how to handle\r\n            // Possibly return a Failure with \"No success\" or fallback value\r\n            return new Failure<T>(new[] \r\n            {\r\n                new ResultError(\"NO_SUCCESS\", \"No successful results found.\")\r\n            });\r\n        }\r\n\r\n        return new Success<T>(lastValue!);\r\n    }\r\n\r\n    // Overload to combine an arbitrary number of results easily\r\n    public static Result<T> Combine(params Result<T>[] results)\r\n        => Combine((IEnumerable<Result<T>>)results);\r\n}\r\n\r\npublic record Success<T>(T Value) : Result<T>;\r\n\r\npublic record Failure<T>(IEnumerable<ResultError> Errors) : Result<T>;\r\n\r\npublic record ResultError(string Code, string Message);\r\n\r\npublic record None : Result;
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs b/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs
+--- a/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs	(revision 50f968e790e82a070e96e248a9f34d46ae452fec)
++++ b/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs	(date 1741257143097)
+@@ -4,6 +4,14 @@
+ 
+ public abstract record Result<T> : Result
+ {
++    public bool IsSuccess => this is Success<T>;
++    public bool IsFailure => this is Failure<T>;
++
++    public T Value => this is Success<T> success
++        ? success.Value
++        : throw new InvalidOperationException("feeeeejl");
++    
++    
+     public static implicit operator Result<T>(T value) 
+         => new Success<T>(value);
+ 
+@@ -58,4 +66,5 @@
+ 
+ public record ResultError(string Code, string Message);
+ 
+-public record None : Result;
+\ No newline at end of file
++public record None : Result;
++
+Index: Tests/UnitTests/UnitTests.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n    <PropertyGroup>\r\n        <TargetFramework>net8.0</TargetFramework>\r\n        <ImplicitUsings>enable</ImplicitUsings>\r\n        <Nullable>enable</Nullable>\r\n\r\n        <IsPackable>false</IsPackable>\r\n        <IsTestProject>true</IsTestProject>\r\n    </PropertyGroup>\r\n\r\n    <ItemGroup>\r\n        <PackageReference Include=\"coverlet.collector\" Version=\"6.0.0\"/>\r\n        <PackageReference Include=\"Microsoft.NET.Test.Sdk\" Version=\"17.8.0\"/>\r\n        <PackageReference Include=\"xunit\" Version=\"2.5.3\"/>\r\n        <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.5.3\"/>\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n        <Using Include=\"Xunit\"/>\r\n    </ItemGroup>\r\n\r\n    <ItemGroup>\r\n      <ProjectReference Include=\"..\\..\\src\\Core\\Tools\\VIAEventAssociation.Core.Tools.OperationResult\\VIAEventAssociation.Core.Tools.OperationResult.csproj\" />\r\n    </ItemGroup>\r\n\r\n</Project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Tests/UnitTests/UnitTests.csproj b/Tests/UnitTests/UnitTests.csproj
+--- a/Tests/UnitTests/UnitTests.csproj	(revision 50f968e790e82a070e96e248a9f34d46ae452fec)
++++ b/Tests/UnitTests/UnitTests.csproj	(date 1741258891278)
+@@ -1,12 +1,12 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+ 
+     <PropertyGroup>
+-        <TargetFramework>net8.0</TargetFramework>
+         <ImplicitUsings>enable</ImplicitUsings>
+         <Nullable>enable</Nullable>
+ 
+         <IsPackable>false</IsPackable>
+         <IsTestProject>true</IsTestProject>
++        <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+     </PropertyGroup>
+ 
+     <ItemGroup>
+@@ -22,6 +22,7 @@
+ 
+     <ItemGroup>
+       <ProjectReference Include="..\..\src\Core\Tools\VIAEventAssociation.Core.Tools.OperationResult\VIAEventAssociation.Core.Tools.OperationResult.csproj" />
++      <ProjectReference Include="..\..\src\Core\VIAEventAssociation.Core.Domain\VIAEventAssociation.Core.Domain.csproj" />
+     </ItemGroup>
+ 
+ </Project>
