@@ -1,0 +1,67 @@
+Index: .idea/.idea.VIAEventAssociation/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"44f7b723-8992-479c-af14-e467a1b27004\" name=\"Changes\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"DpaMonitoringSettings\">\r\n    <option name=\"firstShow\" value=\"false\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;Luux2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Emil645h/VIAEventAssociation.git&quot;,\r\n    &quot;accountId&quot;: &quot;c30984b2-51d5-4ddf-bbe4-aaf0318cebe1&quot;\r\n  }\r\n}</component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a5af9ff347cd3ad4acb6dba62122614d3ccb11748643ebcd64727da64c98c7e2/TypeAsserts.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"mock://D:/VIAEventAssociation/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n    <setting file=\"mock://D:/VIAEventAssociation/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"KubernetesApiPersistence\">{}</component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MetaFilesCheckinStateConfiguration\" checkMetaFiles=\"true\" />\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2twE60ycVvw8UKyKlj29GzDlz5l\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;4b0f16ed-6fa9-4d26-82d6-8e63d3950bce.executor&quot;: &quot;Debug&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/RiderProjects&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;SolutionBuilderGeneralOptionsPage&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"44f7b723-8992-479c-af14-e467a1b27004\" name=\"Changes\" comment=\"\" />\r\n      <created>1741254557986</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1741254557986</updated>\r\n      <workItem from=\"1741254559957\" duration=\"2832000\" />\r\n      <workItem from=\"1741257522808\" duration=\"726000\" />\r\n      <workItem from=\"1741258465674\" duration=\"1563000\" />\r\n      <workItem from=\"1741939512301\" duration=\"52000\" />\r\n      <workItem from=\"1741939611712\" duration=\"16356000\" />\r\n      <workItem from=\"1741957656862\" duration=\"6215000\" />\r\n      <workItem from=\"1742463583244\" duration=\"21883000\" />\r\n      <workItem from=\"1742551567906\" duration=\"253000\" />\r\n      <workItem from=\"1742551894934\" duration=\"1860000\" />\r\n      <workItem from=\"1743669584437\" duration=\"79000\" />\r\n      <workItem from=\"1743669697708\" duration=\"13615000\" />\r\n      <workItem from=\"1747408514654\" duration=\"363000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Value objects for Event og Location\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1741945211004</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1741945211004</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Startet noget event halløj\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1741947959642</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1741947959642</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Fiksede nogle tests\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1741958447848</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1741958447848</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"så er vi sgu i gang\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1741970260918</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1741970260918</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"tests... tests...\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1742488290708</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1742488290708</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"ups glemte en klasse\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1742488311809</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1742488311809</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"7\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UnityCheckinConfiguration\" checkUnsavedScenes=\"true\" />\r\n  <component name=\"UnityProjectConfiguration\" hasMinimizedUI=\"false\" />\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CLEAR_INITIAL_COMMIT_MESSAGE\" value=\"true\" />\r\n    <MESSAGE value=\"Value objects for Event og Location\" />\r\n    <MESSAGE value=\"Startet noget event halløj\" />\r\n    <MESSAGE value=\"Fiksede nogle tests\" />\r\n    <MESSAGE value=\"så er vi sgu i gang\" />\r\n    <MESSAGE value=\"tests... tests...\" />\r\n    <MESSAGE value=\"ups glemte en klasse\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"ups glemte en klasse\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/.idea.VIAEventAssociation/.idea/workspace.xml b/.idea/.idea.VIAEventAssociation/.idea/workspace.xml
+--- a/.idea/.idea.VIAEventAssociation/.idea/workspace.xml	(revision b8cec3ff3596c8481d88f4bb015e0673528fafa7)
++++ b/.idea/.idea.VIAEventAssociation/.idea/workspace.xml	(date 1747410651844)
+@@ -4,7 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="44f7b723-8992-479c-af14-e467a1b27004" name="Changes" comment="" />
++    <list default="true" id="44f7b723-8992-479c-af14-e467a1b27004" name="Changes" comment="test">
++      <change beforePath="$PROJECT_DIR$/.idea/.idea.VIAEventAssociation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VIAEventAssociation/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Core/VIAEventAssociation.Core.Application/CommandDispatching/Commands/Guest/CreateGuestCommand.cs" beforeDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -30,8 +33,8 @@
+ }</component>
+   <component name="HighlightingSettingsPerFile">
+     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a5af9ff347cd3ad4acb6dba62122614d3ccb11748643ebcd64727da64c98c7e2/TypeAsserts.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="mock://D:/VIAEventAssociation/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs" root0="SKIP_HIGHLIGHTING" />
+-    <setting file="mock://D:/VIAEventAssociation/src/Core/Tools/VIAEventAssociation.Core.Tools.OperationResult/OperationResult/Result.cs" root0="SKIP_HIGHLIGHTING" />
++    <setting file="mock://D:/VIAEventAssociation/Tests/UnitTests/Fakes/Repositories/FakeGuestRepository.cs" root0="SKIP_HIGHLIGHTING" />
++    <setting file="mock://D:/VIAEventAssociation/Tests/UnitTests/Fakes/Repositories/FakeGuestRepository.cs" root0="SKIP_HIGHLIGHTING" />
+   </component>
+   <component name="KubernetesApiPersistence">{}</component>
+   <component name="KubernetesApiProvider">{
+@@ -85,7 +88,7 @@
+       <workItem from="1742551894934" duration="1860000" />
+       <workItem from="1743669584437" duration="79000" />
+       <workItem from="1743669697708" duration="13615000" />
+-      <workItem from="1747408514654" duration="363000" />
++      <workItem from="1747408514654" duration="1618000" />
+     </task>
+     <task id="LOCAL-00001" summary="Value objects for Event og Location">
+       <option name="closed" value="true" />
+@@ -135,7 +138,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1742488311809</updated>
+     </task>
+-    <option name="localTasksCounter" value="7" />
++    <task id="LOCAL-00007" summary="test">
++      <option name="closed" value="true" />
++      <created>1747409022069</created>
++      <option name="number" value="00007" />
++      <option name="presentableId" value="LOCAL-00007" />
++      <option name="project" value="LOCAL" />
++      <updated>1747409022069</updated>
++    </task>
++    <option name="localTasksCounter" value="8" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -162,7 +173,8 @@
+     <MESSAGE value="så er vi sgu i gang" />
+     <MESSAGE value="tests... tests..." />
+     <MESSAGE value="ups glemte en klasse" />
+-    <option name="LAST_COMMIT_MESSAGE" value="ups glemte en klasse" />
++    <MESSAGE value="test" />
++    <option name="LAST_COMMIT_MESSAGE" value="test" />
+   </component>
+   <component name="XSLT-Support.FileAssociations.UIState">
+     <expand />
