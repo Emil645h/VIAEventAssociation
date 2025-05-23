@@ -1,11 +1,11 @@
-﻿using SqliteDataWrite;
-using SqliteDataWrite.Repositories.EventRepository;
-using SqliteDataWrite.UnitOfWork;
+﻿using SqliteDataWrite.UnitOfWork;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
-using VIAEventAssociation.Core.Domain.Common.Values;
-using IEventRepository = SqliteDataWrite.Repositories.EventRepository.IEventRepository;
+using VIAEventAssociation.Infrastructure.SqliteDataRead.Common;
+using VIAEventAssociation.Infrastructure.SqliteDataWrite;
+using VIAEventAssociation.Infrastructure.SqliteDataWrite.Repositories.EventRepository;
+using IEventRepository = VIAEventAssociation.Infrastructure.SqliteDataWrite.Repositories.EventRepository.IEventRepository;
 
 namespace IntegrationTests.Repositories;
 
@@ -64,7 +64,7 @@ public class EventRepositoryTests : IDisposable
         Assert.Equal(eventId.Value, retrievedEvent.Id.Value);
         Assert.Equal(title.Value, retrievedEvent.title.Value);
         Assert.Equal(description.Value, retrievedEvent.description.Value);
-        Assert.Equal(EventVisibility.Public.Value, retrievedEvent.visibility.Value);
+        Assert.Equal(EventVisibility.Public.DisplayName, retrievedEvent.visibility.DisplayName);
     }
     
     [Fact]

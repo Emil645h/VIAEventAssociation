@@ -1,16 +1,17 @@
-﻿using SqliteDataWrite;
-using SqliteDataWrite.Repositories.GuestRepository;
-using SqliteDataWrite.UnitOfWork;
+﻿using SqliteDataWrite.UnitOfWork;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Common.UnitOfWork;
+using VIAEventAssociation.Infrastructure.SqliteDataWrite;
+using VIAEventAssociation.Infrastructure.SqliteDataWrite.Repositories.GuestRepository;
+using IGuestRepository = VIAEventAssociation.Infrastructure.SqliteDataWrite.Repositories.GuestRepository.IGuestRepository;
 
 namespace IntegrationTests.Repositories;
 
 public class GuestRepositoryTests : IDisposable
 {
     private readonly WriteDbContext _context;
-    private readonly SqliteDataWrite.Repositories.GuestRepository.IGuestRepository _repository;
+    private readonly IGuestRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
     public GuestRepositoryTests()

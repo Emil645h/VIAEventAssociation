@@ -1,7 +1,6 @@
 ﻿using UnitTests.Fakes;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
-using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 

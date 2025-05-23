@@ -22,9 +22,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.Ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B15C4DD1-014A-4237-9E32-9777D65776B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqliteDataWrite", "src\Infrastructure\SqliteDataWrite\SqliteDataWrite.csproj", "{B139C071-ED51-4C2F-867F-A8FE42CD7D27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Infrastructure.SqliteDataWrite", "src\Infrastructure\VIAEventAssociation.Infrastructure.SqliteDataWrite\VIAEventAssociation.Infrastructure.SqliteDataWrite.csproj", "{B139C071-ED51-4C2F-867F-A8FE42CD7D27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Tests\IntegrationTests\IntegrationTests.csproj", "{762937C0-9179-4C29-99CA-843F5D72B226}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Infrastructure.SqliteDataRead", "src\Infrastructure\VIAEventAssociation.Infrastructure.SqliteDataRead\VIAEventAssociation.Infrastructure.SqliteDataRead.csproj", "{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIAEventAssociation.Core.QueryContracts", "src\Core\VIAEventAssociation.Core.QueryContracts\VIAEventAssociation.Core.QueryContracts.csproj", "{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +64,14 @@ Global
 		{762937C0-9179-4C29-99CA-843F5D72B226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{762937C0-9179-4C29-99CA-843F5D72B226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{762937C0-9179-4C29-99CA-843F5D72B226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5C5D0EF8-5CC7-4728-A524-0D47819D65E4} = {3700EDE0-90F9-43C4-8FB9-5F44FC30305A}
@@ -72,5 +84,7 @@ Global
 		{B15C4DD1-014A-4237-9E32-9777D65776B5} = {130FD53A-01D8-4857-BB03-6462CF2C006E}
 		{B139C071-ED51-4C2F-867F-A8FE42CD7D27} = {B15C4DD1-014A-4237-9E32-9777D65776B5}
 		{762937C0-9179-4C29-99CA-843F5D72B226} = {D115ACEA-B93C-4C69-A405-E2A70B0ECAE4}
+		{E42DDE5F-CAE3-4833-82B7-CC4B8DF5C8CB} = {B15C4DD1-014A-4237-9E32-9777D65776B5}
+		{BA99CE2C-C980-4CD9-9EB3-698E0150DFF8} = {88A491CD-83E8-4729-BE96-846A5F5B7094}
 	EndGlobalSection
 EndGlobal

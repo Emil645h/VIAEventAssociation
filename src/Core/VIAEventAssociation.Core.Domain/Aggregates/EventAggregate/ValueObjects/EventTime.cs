@@ -1,5 +1,4 @@
-﻿using VIAEventAssociation.Core.Domain.Common.Values;
-using VIAEventAssociation.Core.Domain.Contracts;
+﻿using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
 namespace VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqliteDataWrite;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
+using VIAEventAssociation.Infrastructure.SqliteDataWrite;
 
 namespace IntegrationTests.DbContextConfigurations;
 

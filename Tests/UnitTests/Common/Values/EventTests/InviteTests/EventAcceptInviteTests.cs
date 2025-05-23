@@ -4,7 +4,6 @@ using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.Invite;
 using VIAEventAssociation.Core.Domain.Aggregates.EventAggregate.ValueObjects;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate;
 using VIAEventAssociation.Core.Domain.Aggregates.GuestAggregate.ValueObjects;
-using VIAEventAssociation.Core.Domain.Common.Values;
 using VIAEventAssociation.Core.Domain.Contracts;
 using VIAEventAssociation.Core.Tools.OperationResult.OperationResult;
 
